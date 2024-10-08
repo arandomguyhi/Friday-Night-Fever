@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="numberspixel.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="num0" x="0" y="0" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num1" x="15" y="0" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num2" x="30" y="0" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num3" x="45" y="0" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num4" x="60" y="0" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num5" x="75" y="0" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num6" x="90" y="0" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num7" x="0" y="25" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num8" x="15" y="25" width="15" height="25" pivotX="0" pivotY="0"/>
+	<SubTexture name="num9" x="30" y="25" width="15" height="25" pivotX="0" pivotY="0"/>
+</TextureAtlas>

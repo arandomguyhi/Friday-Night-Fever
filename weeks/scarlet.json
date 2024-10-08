@@ -1,0 +1,25 @@
+{
+	"songs": [
+		["Tranquility", "bf", [194, 160, 11]],
+		["Princess", "bf", [194, 160, 11]],
+		["Crack", "bf", [194, 160, 11]],
+		["Bloom", "bf", [194, 160, 11]]
+	],
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "stage",
+
+	"storyName": "Weird Funny Games",
+	"weekBefore": "",
+	"weekName": "Weird Funny Games",
+	"startUnlocked": true,
+	"difficulties": "Normal, Hard",
+
+	"hideStoryMode": true,
+	"hideFreeplay": false,
+	"weeklogo": "weirdfunnygames"
+}

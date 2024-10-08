@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="ratings.png">
+	<!-- Created with Adobe Animate version 21.0.3.38773 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="sick" x="0" y="0" width="478" height="157" pivotX="-1" pivotY="-1"/>
+	<SubTexture name="shit" x="478" y="0" width="379" height="175" pivotX="0" pivotY="0"/>
+	<SubTexture name="good" x="0" y="175" width="375" height="134" pivotX="0" pivotY="0"/>
+	<SubTexture name="bad" x="375" y="175" width="421" height="180" pivotX="0" pivotY="0"/>
+</TextureAtlas>
