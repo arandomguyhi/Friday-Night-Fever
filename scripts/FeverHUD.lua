@@ -24,6 +24,16 @@ function onCreatePost()
     setProperty('comboGroup.visible', false)
 end
 
+function onUpdate()
+    -- not part of the hud, just some global vars
+    dadCamX = runHaxeCode("return dad.getMidpoint().x + 150 + dad.cameraPosition[0] + opponentCameraOffset[0];") -- doing with rhc cuz im lazy
+    dadCamY = runHaxeCode("return dad.getMidpoint().y - 100 + dad.cameraPosition[1] + opponentCameraOffset[1];")
+    bfCamX = runHaxeCode("return boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0] - boyfriendCameraOffset[0];")
+    bfCamY = runHaxeCode("return boyfriend.getMidpoint().y - 100 + boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];")
+
+    setVar('dadCamX', dadCamX) setVar('dadCamY', dadCamY) setVar('bfCamX', bfCamX) setVar('bfCamY', bfCamY)
+end
+
 function onUpdatePost()
     for _, ratin in ipairs(wifeConditions) do
 	if getProperty('ratingPercent') >= ratin[2] then
@@ -59,11 +69,12 @@ function goodNoteHit(id, noteData, noteType, isSustainNote)
     end
 end
 
+local cb = 1
+local index = 1
 function popUpScore()
     local pixel = getPropertyFromClass('states.PlayState', 'isPixelStage')
 
     -- COMBO RATING SHIT
-    local cb = 1
     makeAnimatedLuaSprite('comboRating'..cb, 'combo/ratings'..(pixel and '-pixel' or ''))
     for _, i in pairs({'sick', 'good', 'bad', 'shit'}) do
 	addAnimationByPrefix('comboRating'..cb, i, i, 0, false)
@@ -84,7 +95,6 @@ function popUpScore()
 
     -- COMBO NUM SHIT
     if combo >= 10 or combo == 0 then
-	local index = 0
 	local seperatedScore = stringSplit(combo, '')
 
 	if #seperatedScore == 2 then

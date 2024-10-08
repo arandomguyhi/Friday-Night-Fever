@@ -1,0 +1,146 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				20,
+				105
+			],
+			"anim": "singRIGHTmiss",
+			"fps": 24,
+			"name": "fever right miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				38,
+				29
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "fever down0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				110,
+				91
+			],
+			"anim": "singLEFTmiss",
+			"fps": 24,
+			"name": "fever left miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				42,
+				79
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "fever up0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				27,
+				92
+			],
+			"anim": "hey",
+			"fps": 24,
+			"name": "fever hey",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				6,
+				93
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "fever idle0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				41,
+				28
+			],
+			"anim": "singDOWNmiss",
+			"fps": 24,
+			"name": "fever down miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				21,
+				108
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "fever right0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				90,
+				91
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "fever left0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				40,
+				103
+			],
+			"anim": "singUPmiss",
+			"fps": 24,
+			"name": "fever up miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				62,
+				120
+			],
+			"anim": "dodge",
+			"fps": 24,
+			"name": "fever dodge",
+			"indices": []
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/costumes/soulsplit",
+	"position": [
+		0,
+		350
+	],
+	"healthicon": "bf",
+	"flip_x": true,
+	"healthbar_colors": [
+		49,
+		176,
+		209
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": true
+}

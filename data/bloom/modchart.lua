@@ -12,7 +12,7 @@ function onCreate()
     addAnimationByPrefix('clap', 'clap', 'Final scarlet slap', 24, false)
     setProperty('clap.antialiasing', true)
     addLuaSprite('clap')
-    setProperty('clap.visible', false)
+    setProperty('clap.alpha', 0.001)
 
     makeLuaSprite('spr')
     makeGraphic('spr', 1280, BLACK_BAR_HEIGHT, '000000')
@@ -46,19 +46,20 @@ end
 
 local prevDad = true
 
-function onMoveCamera(focus)
+function onSectionHit()
     if curBeat >= 191 and curBeat < 256 then
-	setProperty('dad.visible', true)
-
-	if focus == 'dad' then
+	if not mustHitSection then
+	    setProperty('dad.visible', true)
 	    prevDad = true
-	    --snapCamera(new FlxPoint(DAD_CAM_POS.x - 70, DAD_CAM_POS.y - 70));
+	    setProperty('camFollow.x', getVar('dadCamX') - 70) setProperty('camGame.scroll.x', getVar('dadCamX') - 70 - (screenWidth/2))
+	    setProperty('camFollow.y', getVar('dadCamY') - 70) setProperty('camGame.scroll.y', getVar('dadCamY') - 70 - (screenHeight/2))
 	else
 	    if prevDad then
 		runHaxeCode("getVar('screen').setFloat('screens', getVar('screen').getFloat('screens') + 1);")
 
 		prevDad = false
-		--snapCamera(new FlxPoint(BF_CAM_POS.x + 70, BF_CAM_POS.y + 165));
+		setProperty('camFollow.x', getVar('bfCamX') - 70) setProperty('camGame.scroll.x', getVar('bfCamX') - 70 - (screenWidth/2))
+		setProperty('camFollow.y', getVar('bfCamY') + 165) setProperty('camGame.scroll.y', getVar('bfCamY') + 165 - (screenHeight/2))
 		setProperty('dad.visible', false)
 	    end
 	end
@@ -67,22 +68,25 @@ end
 
 local fireOnce = false
 setVar('BWValue', 0)
+function onUpdate()
+    if curBeat == 191 then
+	if curBeat >= 255 then return end
+	for _, bgElements in pairs({'clocks', 'clockScar', 'clockFever'}) do
+	    setShaderFloat(bgElements, 'u_colorFactor', getVar('BWValue'))
+	end
+    end
+end
+
 function onUpdatePost(elapsed)
     if curBeat >= 192 and curBeat <= 255 then
-	scaleObject('iconP1', 1, 1, false)
-	scaleObject('iconP2', 1, 1, false)
-	scaleObject('scoreTxt', 1, 1, false)
+	scaleObject('iconP1', 1, 1)
+	scaleObject('iconP2', 1, 1)
+	scaleObject('scoreTxt', 1, 1)
 	setTextString('scoreTxt', prevScore)
 	setProperty('health', prevHealth)
 	setProperty('scoreTxt.x', (screenWidth / 2) - (getProperty('scoreTxt.width') / 2))
     elseif curBeat == 256 and not fireOnce then
 	fireOnce = true
-    end
-
-    if curBeat == 191 then
-	for _, bgElements in pairs({'clocks', 'clockScar', 'clockFever'}) do
-	    setShaderFloat(bgElements, 'u_colorFactor', getVar('BWValue'))
-	end
     end
 end
 
@@ -109,7 +113,7 @@ function onBeatHit()
 
     if curBeat == 192 then
 	setProperty('defaultCamZoom', getProperty('defaultCamZoom') - 0.2)
-	setProperty('clap.visible', false)
+	setProperty('clap.alpha', 0.001)
 	setProperty('dad.visible', true)
 
 	setProperty('spr.visible', true)
@@ -128,35 +132,34 @@ function onBeatHit()
 	doTweenY('balx', 'spr2', screenHeight, 0.24)
 	setProperty('defaultCamZoom', getProperty('defaultCamZoom') - 0.35)
 
-	runHaxeCode("game.getLuaObject('whittyBG').shader = null;")
+	setProperty('camFollow.x', getVar('dadCamX') - 70) setProperty('camGame.scroll.x', getVar('dadCamX') - 70 - (screenWidth/2))
+	setProperty('camFollow.y', getVar('dadCamY') - 70) setProperty('camGame.scroll.y', getVar('dadCamY') - 70 - (screenHeight/2))
+	setProperty('isCameraOnForcedPos', false)
 
 	for i = 0,3 do
 	    setProperty('strumLineNotes.members['..i..'].alpha', 0.43)end
 
 	for _, bgElements in pairs({'clocks', 'clockScar', 'clockFever'}) do
-	    runHaxeCode("game.getLuaObject('"..bgElements.."').shader = null;")
+	    removeSpriteShader(bgElements)
 	end
+	setSpriteShader('clocks', 'WiggleEffect')
     end
 end
 
---[[
-function onStepHit(curStep:Int)
-{
-	if (curStep == 762)
-	{
-		clap.visible = true;
-		dad.visible = false;
-		game.disableCamera = true;
-		camFollow.x -= 250;
-		game.defaultCamZoom += 0.2;
+function onStepHit()
+    if curStep == 762 then
+	setProperty('clap.alpha', 1)
+	setProperty('dad.visible', false)
+	setProperty('isCameraOnForcedPos', true)
+	setProperty('camFollow.x', getProperty('camFollow.x') - 250)
+	setProperty('defaultCamZoom', getProperty('defaultCamZoom') + 0.2)
 
-		clap.animation.play("clap");
-	}
-}
+	playAnim('clap', 'clap')
+    end
+end
 
-function onPlayerNoteHit(note)
-{
-	if (curBeat >= 192 && curBeat <= 255)
-		game.health = prevHealth;
-}
-]]
+function goodNoteHit()
+    if curBeat >= 192 and curBeat <= 255 then
+	setProperty('health', prevHealth)
+    end
+end
