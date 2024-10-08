@@ -58,7 +58,7 @@ function onSectionHit()
 		runHaxeCode("getVar('screen').setFloat('screens', getVar('screen').getFloat('screens') + 1);")
 
 		prevDad = false
-		setProperty('camFollow.x', getVar('bfCamX') - 70) setProperty('camGame.scroll.x', getVar('bfCamX') - 70 - (screenWidth/2))
+		setProperty('camFollow.x', getVar('bfCamX') + 70) setProperty('camGame.scroll.x', getVar('bfCamX') + 70 - (screenWidth/2))
 		setProperty('camFollow.y', getVar('bfCamY') + 165) setProperty('camGame.scroll.y', getVar('bfCamY') + 165 - (screenHeight/2))
 		setProperty('dad.visible', false)
 	    end
@@ -134,10 +134,11 @@ function onBeatHit()
 
 	setProperty('camFollow.x', getVar('dadCamX') - 70) setProperty('camGame.scroll.x', getVar('dadCamX') - 70 - (screenWidth/2))
 	setProperty('camFollow.y', getVar('dadCamY') - 70) setProperty('camGame.scroll.y', getVar('dadCamY') - 70 - (screenHeight/2))
+	setProperty('dad.visible', true)
 	setProperty('isCameraOnForcedPos', false)
 
 	for i = 0,3 do
-	    setProperty('strumLineNotes.members['..i..'].alpha', 0.43)end
+	    setProperty('strumLineNotes.members['..i..'].alpha', 1)end
 
 	for _, bgElements in pairs({'clocks', 'clockScar', 'clockFever'}) do
 	    removeSpriteShader(bgElements)

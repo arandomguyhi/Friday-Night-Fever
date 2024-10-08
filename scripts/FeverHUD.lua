@@ -28,7 +28,7 @@ function onUpdate()
     -- not part of the hud, just some global vars
     dadCamX = runHaxeCode("return dad.getMidpoint().x + 150 + dad.cameraPosition[0] + opponentCameraOffset[0];") -- doing with rhc cuz im lazy
     dadCamY = runHaxeCode("return dad.getMidpoint().y - 100 + dad.cameraPosition[1] + opponentCameraOffset[1];")
-    bfCamX = runHaxeCode("return boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0] - boyfriendCameraOffset[0];")
+    bfCamX = runHaxeCode("return boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0] + boyfriendCameraOffset[0];")
     bfCamY = runHaxeCode("return boyfriend.getMidpoint().y - 100 + boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];")
 
     setVar('dadCamX', dadCamX) setVar('dadCamY', dadCamY) setVar('bfCamX', bfCamX) setVar('bfCamY', bfCamY)
