@@ -26,6 +26,10 @@ function onCreate()
     addLuaSprite('spr2')
     setProperty('spr2.visible', false)
 
+    for _, bgElements in pairs({'clocks', 'clockScar', 'clockFever'}) do
+	setScrollFactor(bgElements, 0.9, 0.9)
+    end
+
     setSpriteShader('whittyBG', 'BWShader')
     setShaderFloat('whittyBG', 'u_colorFactor', 0)
 

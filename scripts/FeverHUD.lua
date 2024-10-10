@@ -22,6 +22,9 @@ local wife = ''
 luaDebugMode = true
 function onCreatePost()
     setProperty('comboGroup.visible', false)
+
+    setProperty('timeBar.visible', false)
+    setProperty('timeTxt.visible', false)
 end
 
 function onUpdate()
@@ -70,7 +73,6 @@ function goodNoteHit(id, noteData, noteType, isSustainNote)
 end
 
 local cb = 1
-local index = 1
 function popUpScore()
     local pixel = getPropertyFromClass('states.PlayState', 'isPixelStage')
 
@@ -95,6 +97,7 @@ function popUpScore()
 
     -- COMBO NUM SHIT
     if combo >= 10 or combo == 0 then
+	local index = 0
 	local seperatedScore = stringSplit(combo, '')
 
 	if #seperatedScore == 2 then
