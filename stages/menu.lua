@@ -1,6 +1,7 @@
 local firstTime = true
 local selectedSomethin = false
 local hitboxes = {}
+local callbacks = {}
 
 luaDebugMode = true
 function onCreate()
@@ -18,7 +19,9 @@ function onCreate()
     scaleObject('train', 1.32, 1.32, false)
     setObjectCamera('train', 'other')
     addLuaSprite('train')
-    createHitbox('trainhit', 480, 205, 165, 280)
+    createHitbox('trainhit', 480, 205, 165, 280, function(spr)
+	debugPrint('FUNCIONOUYAYAAAYAYA')
+    end)
 
     makeLuaSprite('mainBG', 'newMain/subway_bg', 0, -12)
     setObjectCamera('mainBG', 'other')
@@ -108,27 +111,7 @@ end
 
 local playedAnim, playedAnimSel = false -- this is probably so dumb
 function onUpdate()
-    setProperty('hand.x', getMouseX('other')) setProperty('hand.y', getMouseY('other'))
-
-    for i, obj in ipairs(hitboxes) do
-	if luaSpriteExists(obj) then
-	    if mouseOverlaps(obj) then
-		if not playedAnimSel then playedAnim = false playedAnimSel = true playAnim(obj:gsub('hit', ''), 'selected') end
-
-		playAnim('hand', 'qidle')
-		setProperty('hand.offset.y', 24)
-
-		if mouseClicked() then
-		    debugPrint('it detected')
-		end
-	    else
-		playedAnimSel = false
-	 	if not playedAnim then playedAnimSel = false playedAnim = true playAnim(obj:gsub('hit', ''), 'idle') end
-		playAnim('hand', 'idle')
-		setProperty('hand.offset.y', 0)
-	    end
-	end
-    end
+    setProperty('hand.x', getMouseX('other')) setProperty('hand.y', getMouseY('other')
 
 --[[    if mousePressed() then
 	playAnim('hand', selectedSomethin and 'qselect' or 'select')
@@ -139,13 +122,15 @@ function onUpdate()
     end]]
 end
 
-function createHitbox(tag, xpos, ypos, width, height)
+function createHitbox(tag, xpos, ypos, width, height, cb)
     makeLuaSprite(tag, nil, xpos, ypos)
     makeGraphic(tag, width, height, 'ffffff')
     setObjectCamera(tag, 'other')
     setProperty(tag..'.visible', false)
     addLuaSprite(tag)
     table.insert(hitboxes, tag)
+
+    table.insert(callbacks, {sprite = tag, callback = cb})
 end
 
 function mouseOverlaps(spr)
