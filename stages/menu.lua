@@ -15,8 +15,10 @@ function onCreate()
 end
 
 function onSongStart()
-    openCustomSubstate('Main Menu', true)
+    openCustomSubstate('Main Menu')
 end
+
+function onPause() return Function_Stop end
 
 function onCustomSubstateCreate(name)
     if name == 'Main Menu' then
@@ -79,8 +81,8 @@ function onCustomSubstateCreate(name)
 	addLuaSprite('freeplay')
 	createHitbox('freeplayhit', 1100, 160, 145, 225, function()
 	    closeCustomSubstate('Main Menu')
-	    runTimer('cu', 2)
-	    function onTimerCompleted(tag) if tag == 'cu' then openCustomSubstate('Brochure Menu', true)end end
+	    runTimer('cu', 1)
+	    function onTimerCompleted(tag) if tag == 'cu' then openCustomSubstate('Brochure Menu')end end
 	end)
 
 	makeAnimatedLuaSprite('boombox', 'newMain/boombox', 779, 433)
@@ -143,13 +145,13 @@ function onCustomSubstateCreate(name)
 
 	createInstance('cscroll', 'flixel.addons.display.FlxBackdrop', {nil, 0x01})
 	loadGraphic('cscroll', 'story/selecting/cscroll')
-	runHaxeCode("game.getLuaObject('cscroll').scale.scale(1.55);")
+	scaleObject('cscroll', 1.55, 1.55)
 	setProperty('cscroll.alpha', 0.0000000000009)
 	setObjectCamera('cscroll', 'other')
 
 	createInstance('fscroll', 'flixel.addons.display.FlxBackdrop', {nil, 0x01})
 	loadGraphic('fscroll', 'story/selecting/fscroll')
-	runHaxeCode("game.getLuaObject('fscroll').scale.scale(1.55);")
+	scaleObject('fscroll', 1.55, 1.55)
 	setProperty('fscroll.alpha', 0.0000000000009)
 	setObjectCamera('fscroll', 'other')
 
@@ -165,7 +167,6 @@ function onCustomSubstateCreate(name)
 	    scaleObject('brochure'..i, 0.66, 0.66)
 	    setProperty('brochure'..i..'.x', screenWidth * (i == 0 and 0.3 or 0.6) - (getProperty('brochure'..i..'.width') / 2))
 	    setProperty('brochure'..i..'.y', (screenHeight * 0.5) - (getProperty('brochure'..i..'.height') / 2))
-	    --callMethod('brochure'..i..'.setPosition', {screenWidth * (i == 0 and 0.3 or 0.6) - (getProperty('brochure'..i..'.width') / 2), (screenHeight * 0.5) - (getProperty('brochure'..i..'.height') / 2)})
 	    runHaxeCode("game.getLuaObject('brochure"..i.."').centerOffsets();")
 	    playAnim('brochure'..i, 'open')
 	    setProperty('brochure'..i..'.antialiasing', true)
@@ -173,7 +174,31 @@ function onCustomSubstateCreate(name)
 	    addLuaSprite('brochure'..i)
 	    table.insert(brochures, 'brochure'..i)
 	    setProperty('brochure'..i..'.ID', i)
+
+	    runHaxeCode([[
+		game.getLuaObject('brochure]]..i..[[').animation.finishCallback = (t) -> {
+		    if (t == 'open')
+			game.callOnLuas('changeSelected', [true]);
+
+		    if (t == 'confirm')
+			debugPrint('test');
+		}
+	    ]])
 	end
+
+	makeLuaSprite('textBG', nil, 0, screenHeight * 0.9)
+	makeGraphic('textBG', 10, 10, '000000')
+	setProperty('textBG.alpha', 0.6)
+	setProperty('textBG.origin.y', 0)
+	setObjectCamera('textBG', 'other')
+	addLuaSprite('textBG')
+
+	makeLuaText('text', '', 0, 0, screenHeight * 0.9)
+	setTextFont('text', 'VCR OSD Mono.otf')
+	setTextSize('text', 22)
+	setTextAlignment('text', 'center')
+	setObjectCamera('text', 'other')
+	addLuaText('text')
     end
 end
 
@@ -184,7 +209,7 @@ end
 local playedAnim, playedAnimSel = false -- this is probably so dumb
 function onCustomSubstateUpdate(name, elapsed)
     if keyboardJustPressed('SPACE') then
-	    closeCustomSubstate()
+	    restartSong()
 	end
 
     setProperty('hand.x', getMouseX('other')) setProperty('hand.y', getMouseY('other'))
@@ -216,7 +241,7 @@ function onCustomSubstateUpdate(name, elapsed)
 
     if name == 'Brochure Menu' then
 	if keyJustPressed('left') or keyJustPressed('right') then
-	    changeSelection()end
+	    changeSelected()end
 
 	setProperty('cscroll.x', getProperty('cscroll.x') - elapsed * 120)
 	setProperty('fscroll.x', getProperty('fscroll.x') - elapsed * 120)
@@ -226,7 +251,7 @@ function onCustomSubstateUpdate(name, elapsed)
     end
 end
 
-function changeSelection(firstStart)
+function changeSelected(firstStart)
     firstStart = false
     if not firstStart then
 	selectingFrenzy = not selectingFrenzy end
@@ -235,12 +260,17 @@ function changeSelection(firstStart)
 	playAnim(i, (selectingFrenzy and getProperty(i..'.ID') == 0 or not selectingFrenzy and getProperty(i..'.ID') == 1) and 'selected' or 'nselected')
 
 	if getProperty(i..'.ID') == 1 then
-	    callMethod(i..'.offset.set', {-52.27, 128.93})
+	    setProperty(i..'.offset.x', -52.27)
+	    setProperty(i..'.offset.y', 128.93)
 	end
     end
 
     setProperty('fscroll.alpha', selectingFrenzy and 0.2 or 0)
     setProperty('cscroll.alpha', not selectingFrenzy and 0.2 or 0)
+    setTextString('text', selectingFrenzy and 'Contains all of the brand new weeks featured in the Frenzy update' or 'The original Friday Night Fever experience featuring Weeks 1 throught 6')
+    screenCenter('text', 'X')
+    screenCenter('textBG', 'X')
+    scaleObject('textBG', (getProperty('text.width') / getProperty('textBG.width')) * 1.03, getProperty('text.height') / getProperty('textBG.height'), false)
 end
 
 function createHitbox(tag, xpos, ypos, width, height, cb)
