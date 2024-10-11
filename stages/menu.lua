@@ -111,7 +111,18 @@ end
 
 local playedAnim, playedAnimSel = false -- this is probably so dumb
 function onUpdate()
-    setProperty('hand.x', getMouseX('other')) setProperty('hand.y', getMouseY('other')
+    setProperty('hand.x', getMouseX('other')) setProperty('hand.y', getMouseY('other'))
+
+    for _, entry in ipairs(callbacks) do
+	if mouseOverlaps(entry.sprite) then
+	    playAnim(entry.sprite:gsub('hit', ''), 'selected')
+	    if mouseClicked() then
+		if entry.callback then -- check if it exists (just for now)
+		entry.callback()
+		end
+	    end
+	end
+    end
 
 --[[    if mousePressed() then
 	playAnim('hand', selectedSomethin and 'qselect' or 'select')
