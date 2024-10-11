@@ -1,12 +1,9 @@
 local firstTime = true
 local selectedSomethin = false
-
-local mainMenuObjects = {'options', 'credits', 'freeplay', 'boombox', 'costumes', 'extras', 'train'}
+local hitboxes = {}
 
 luaDebugMode = true
 function onCreate()
-    setPropertyFromClass('flixel.FlxG', 'mouse.visible', false)
-
     makeLuaSprite('tunnelBG', 'newMain/subway_bg_2', 0, -12)
     setObjectCamera('tunnelBG', 'other')
     addLuaSprite('tunnelBG')
@@ -21,6 +18,7 @@ function onCreate()
     scaleObject('train', 1.32, 1.32, false)
     setObjectCamera('train', 'other')
     addLuaSprite('train')
+    createHitbox('trainhit', 480, 205, 165, 280)
 
     makeLuaSprite('mainBG', 'newMain/subway_bg', 0, -12)
     setObjectCamera('mainBG', 'other')
@@ -34,6 +32,7 @@ function onCreate()
     playAnim('options', 'idle')
     setObjectCamera('options', 'other')
     addLuaSprite('options')
+    createHitbox('optionshit', 915.5, 580.55, 365, 105)
 
     makeAnimatedLuaSprite('credits', 'newMain/credits', -10, 45)
     addAnimationByPrefix('credits', 'idle', 'credits notselected', 24, false)
@@ -43,6 +42,7 @@ function onCreate()
     playAnim('credits', 'idle')
     setObjectCamera('credits', 'other')
     addLuaSprite('credits')
+    createHitbox('creditshit', 40, 175, 225, 525)
 
     makeAnimatedLuaSprite('freeplay', 'newMain/freeplay', 1100, 160)
     addAnimationByPrefix('freeplay', 'idle', 'Freeplay not selected', 24, false)
@@ -52,6 +52,7 @@ function onCreate()
     playAnim('freeplay', 'idle')
     setObjectCamera('freeplay', 'other')
     addLuaSprite('freeplay')
+    createHitbox('freeplayhit', 1100, 160, 145, 225)
 
     makeAnimatedLuaSprite('boombox', 'newMain/boombox', 779, 433)
     addAnimationByPrefix('boombox', 'idle', 'boombox not selected', 24, false)
@@ -61,6 +62,7 @@ function onCreate()
     playAnim('boombox', 'idle')
     setObjectCamera('boombox', 'other')
     addLuaSprite('boombox')
+    createHitbox('boomboxhit', 779, 433, 165, 135)
 
     makeAnimatedLuaSprite('costumes', 'newMain/costumes', 505, 580)
     addAnimationByPrefix('costumes', 'idle', 'costume notselected', 24, false)
@@ -70,6 +72,7 @@ function onCreate()
     playAnim('costumes', 'idle')
     setObjectCamera('costumes', 'other')
     addLuaSprite('costumes')
+    createHitbox('costumeshit', 505, 580, 240, 115)
 
     makeAnimatedLuaSprite('extras', 'newMain/extra', 839, 210)
     addAnimationByPrefix('extras', 'idle', 'extras notselected', 24, false)
@@ -79,6 +82,8 @@ function onCreate()
     playAnim('extras', 'idle')
     setObjectCamera('extras', 'other')
     addLuaSprite('extras')
+
+    createHitbox('extrashit', 839, 210, 150, 175)
 
     makeLuaText('versionShit', 'Friday Night Fever 0.0.1', 0, 0, 0)
     setTextSize('versionShit', 20)
@@ -101,20 +106,27 @@ function onCreate()
     addLuaSprite('hand', true)
 end
 
+local playedAnim, playedAnimSel = false -- this is probably so dumb
 function onUpdate()
     setProperty('hand.x', getMouseX('other')) setProperty('hand.y', getMouseY('other'))
 
-    for i, obj in pairs(mainMenuObjects) do
-	if mouseOverlaps(obj) then
-	    playAnim(obj, 'selected')
+    for i, obj in ipairs(hitboxes) do
+	if luaSpriteExists(obj) then
+	    if mouseOverlaps(obj) then
+		if not playedAnimSel then playedAnim = false playedAnimSel = true playAnim(obj:gsub('hit', ''), 'selected') end
 
-	    playAnim('hand', 'qidle')
-	    setProperty('hand.offset.y', 24)
-	else
-	    playAnim('hand', 'idle')
-	    setProperty('hand.offset.y', 0)
+		playAnim('hand', 'qidle')
+		setProperty('hand.offset.y', 24)
 
-	    playAnim(obj, 'idle')
+		if mouseClicked() then
+		    debugPrint('it detected')
+		end
+	    else
+		playedAnimSel = false
+	 	if not playedAnim then playedAnimSel = false playedAnim = true playAnim(obj:gsub('hit', ''), 'idle') end
+		playAnim('hand', 'idle')
+		setProperty('hand.offset.y', 0)
+	    end
 	end
     end
 
@@ -127,7 +139,17 @@ function onUpdate()
     end]]
 end
 
+function createHitbox(tag, xpos, ypos, width, height)
+    makeLuaSprite(tag, nil, xpos, ypos)
+    makeGraphic(tag, width, height, 'ffffff')
+    setObjectCamera(tag, 'other')
+    setProperty(tag..'.visible', false)
+    addLuaSprite(tag)
+    table.insert(hitboxes, tag)
+end
+
 function mouseOverlaps(spr)
     -- much easier :)
-    return runHaxeCode("FlxG.mouse.overlaps(game.getLuaObject('"..spr.."'));")
+    --return runHaxeCode("FlxG.mouse.overlaps(game.getLuaObject('"..spr.."'));")
+    return getMouseX('other') > getProperty(spr..'.x') and getMouseX('other') < getProperty(spr..'.x') + getProperty(spr..'.width') and getMouseY('other') > getProperty(spr..'.y') and getMouseY('other') < getProperty(spr..'.y') + getProperty(spr..'.height')
 end
