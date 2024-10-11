@@ -8,6 +8,10 @@ local selectingFrenzy = true
 local brochures = {}
 setVar('allowInput', false)
 
+-- Story Mode Menu
+initSaveData('StoryMenuState')
+flushSaveData('StoryMenuState')
+
 luaDebugMode = true
 function onCreate()
     setProperty('skipCountdown', true)
@@ -184,7 +188,8 @@ function onCustomSubstateCreate(name)
 			setVar('allowInput', true);
 			game.callOnLuas('changeSelected', [true]);
 		    }else if (t == 'confirm') {
-			debugPrint('test');
+			game.callOnLuas('setDataFromSave', ['StoryMenuState', 'isFrenzy', getVar('selectingFrenzy')]);
+			debugPrint(game.callOnLuas('getDataFromSave', ['StoryMenuState', 'isFrenzy']));
 		    }
 		}
 	    ]])
@@ -249,6 +254,8 @@ function onCustomSubstateUpdate(name, elapsed)
 	    setVar('allowInput', false)
 	    playAnim(brochures[selectingFrenzy and 1 or 2], 'confirm')
 	end
+
+	setVar('selectingFrenzy', selectingFrenzy)
     end
 end
 
