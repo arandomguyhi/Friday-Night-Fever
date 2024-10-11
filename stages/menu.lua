@@ -14,6 +14,10 @@ function onCreate()
     setProperty('camHUD.visible', false) -- i don't need these cams for now
 end
 
+function onCreatePost()
+    playMusic('freakyMenu', 1, true)
+end
+
 function onSongStart()
     openCustomSubstate('Main Menu')
 end
@@ -37,7 +41,9 @@ function onCustomSubstateCreate(name)
 	setObjectCamera('train', 'other')
 	addLuaSprite('train')
 	createHitbox('trainhit', 480, 205, 165, 280, function()
-	    debugPrint('FUNCIONOUYAYAAAYAYA')
+	    closeCustomSubstate('Main Menu')
+	    runTimer('cu', 1)
+	    function onTimerCompleted(tag) if tag == 'cu' then openCustomSubstate('Brochure Menu')end end
 	end)
 
 	makeLuaSprite('mainBG', 'newMain/subway_bg', 0, -12)
@@ -79,11 +85,7 @@ function onCustomSubstateCreate(name)
 	playAnim('freeplay', 'idle')
 	setObjectCamera('freeplay', 'other')
 	addLuaSprite('freeplay')
-	createHitbox('freeplayhit', 1100, 160, 145, 225, function()
-	    closeCustomSubstate('Main Menu')
-	    runTimer('cu', 1)
-	    function onTimerCompleted(tag) if tag == 'cu' then openCustomSubstate('Brochure Menu')end end
-	end)
+	createHitbox('freeplayhit', 1100, 160, 145, 225)
 
 	makeAnimatedLuaSprite('boombox', 'newMain/boombox', 779, 433)
 	addAnimationByPrefix('boombox', 'idle', 'boombox not selected', 24, true)
@@ -202,10 +204,6 @@ function onCustomSubstateCreate(name)
     end
 end
 
-function onCustomSubstateCreatePost()
-    playMusic('freakyMenu', 1, true)
-end
-
 local playedAnim, playedAnimSel = false -- this is probably so dumb
 function onCustomSubstateUpdate(name, elapsed)
     if keyboardJustPressed('SPACE') then
@@ -224,7 +222,7 @@ function onCustomSubstateUpdate(name, elapsed)
 
     if name == 'Main Menu' then
 	for _, entry in ipairs(callbacks) do
-	    if mouseOverlaps(entry.sprite) then
+	    if getProperty(entry.sprite..'.visible') and mouseOverlaps(entry.sprite) then
 		selectedSomethin = true
 		playAnim(entry.sprite:gsub('hit', ''), 'selected', true)
 		if mouseClicked() then
