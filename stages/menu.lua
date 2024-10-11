@@ -3,6 +3,10 @@ local selectedSomethin = false
 local hitboxes = {}
 local callbacks = {}
 
+-- Brochure menu
+local selectingFrenzy = true
+local brochures = {}
+
 luaDebugMode = true
 function onCreate()
     setProperty('skipCountdown', true)
@@ -73,7 +77,11 @@ function onCustomSubstateCreate(name)
 	playAnim('freeplay', 'idle')
 	setObjectCamera('freeplay', 'other')
 	addLuaSprite('freeplay')
-	createHitbox('freeplayhit', 1100, 160, 145, 225)
+	createHitbox('freeplayhit', 1100, 160, 145, 225, function()
+	    closeCustomSubstate('Main Menu')
+	    runTimer('cu', 2)
+	    function onTimerCompleted(tag) if tag == 'cu' then openCustomSubstate('Brochure Menu', true)end end
+	end)
 
 	makeAnimatedLuaSprite('boombox', 'newMain/boombox', 779, 433)
 	addAnimationByPrefix('boombox', 'idle', 'boombox not selected', 24, true)
@@ -125,16 +133,62 @@ function onCustomSubstateCreate(name)
 	setProperty('hand.antialiasing', true)
 	setObjectCamera('hand', 'other')
 	addLuaSprite('hand', true)
+    end
 
-	playMusic('freakyMenu', 1, true)
+    if name == 'Brochure Menu' then
+	makeLuaSprite('bg', 'story/selecting/bg')
+	setProperty('bg.antialiasing', true)
+	setObjectCamera('bg', 'other')
+	addLuaSprite('bg')
+
+	createInstance('cscroll', 'flixel.addons.display.FlxBackdrop', {nil, 0x01})
+	loadGraphic('cscroll', 'story/selecting/cscroll')
+	runHaxeCode("game.getLuaObject('cscroll').scale.scale(1.55);")
+	setProperty('cscroll.alpha', 0.0000000000009)
+	setObjectCamera('cscroll', 'other')
+
+	createInstance('fscroll', 'flixel.addons.display.FlxBackdrop', {nil, 0x01})
+	loadGraphic('fscroll', 'story/selecting/fscroll')
+	runHaxeCode("game.getLuaObject('fscroll').scale.scale(1.55);")
+	setProperty('fscroll.alpha', 0.0000000000009)
+	setObjectCamera('fscroll', 'other')
+
+	addInstance('cscroll')
+	addInstance('fscroll')
+
+	for i = 0, 1 do
+	    makeAnimatedLuaSprite('brochure'..i, 'story/selecting/'..(i == 0 and 'f' or 'c')..'brochure')
+	    for _,f in pairs({'confirm', 'nselected', 'selected', 'open'}) do
+		addAnimationByPrefix('brochure'..i, f, f, 24, f:find('selected') and true or false)
+	    end
+	    playAnim('brochure'..i, 'nselected')
+	    scaleObject('brochure'..i, 0.66, 0.66)
+	    setProperty('brochure'..i..'.x', screenWidth * (i == 0 and 0.3 or 0.6) - (getProperty('brochure'..i..'.width') / 2))
+	    setProperty('brochure'..i..'.y', (screenHeight * 0.5) - (getProperty('brochure'..i..'.height') / 2))
+	    --callMethod('brochure'..i..'.setPosition', {screenWidth * (i == 0 and 0.3 or 0.6) - (getProperty('brochure'..i..'.width') / 2), (screenHeight * 0.5) - (getProperty('brochure'..i..'.height') / 2)})
+	    runHaxeCode("game.getLuaObject('brochure"..i.."').centerOffsets();")
+	    playAnim('brochure'..i, 'open')
+	    setProperty('brochure'..i..'.antialiasing', true)
+	    setObjectCamera('brochure'..i, 'other')
+	    addLuaSprite('brochure'..i)
+	    table.insert(brochures, 'brochure'..i)
+	    setProperty('brochure'..i..'.ID', i)
+	end
     end
 end
 
+function onCustomSubstateCreatePost()
+    playMusic('freakyMenu', 1, true)
+end
+
 local playedAnim, playedAnimSel = false -- this is probably so dumb
-function onCustomSubstateUpdate(name)
+function onCustomSubstateUpdate(name, elapsed)
+    if keyboardJustPressed('SPACE') then
+	    closeCustomSubstate()
+	end
+
     setProperty('hand.x', getMouseX('other')) setProperty('hand.y', getMouseY('other'))
 
-    
     if mousePressed() then
 	playAnim('hand', selectedSomethin and 'qselect' or 'select')
 	setProperty('hand.offset.y', selectedSomethin and 34 or 8)
@@ -144,10 +198,6 @@ function onCustomSubstateUpdate(name)
     end
 
     if name == 'Main Menu' then
- 	if keyboardJustPressed('ENTER') then
-	    closeCustomSubstate()
-	end
-
 	for _, entry in ipairs(callbacks) do
 	    if mouseOverlaps(entry.sprite) then
 		selectedSomethin = true
@@ -163,6 +213,34 @@ function onCustomSubstateUpdate(name)
 	    end
 	end
     end
+
+    if name == 'Brochure Menu' then
+	if keyJustPressed('left') or keyJustPressed('right') then
+	    changeSelection()end
+
+	setProperty('cscroll.x', getProperty('cscroll.x') - elapsed * 120)
+	setProperty('fscroll.x', getProperty('fscroll.x') - elapsed * 120)
+	if getProperty('controls.ACCEPT') then
+	    playAnim(brochures[selectingFrenzy and 1 or 2], 'confirm')
+	end
+    end
+end
+
+function changeSelection(firstStart)
+    firstStart = false
+    if not firstStart then
+	selectingFrenzy = not selectingFrenzy end
+
+    for _,i in pairs(brochures) do
+	playAnim(i, (selectingFrenzy and getProperty(i..'.ID') == 0 or not selectingFrenzy and getProperty(i..'.ID') == 1) and 'selected' or 'nselected')
+
+	if getProperty(i..'.ID') == 1 then
+	    callMethod(i..'.offset.set', {-52.27, 128.93})
+	end
+    end
+
+    setProperty('fscroll.alpha', selectingFrenzy and 0.2 or 0)
+    setProperty('cscroll.alpha', not selectingFrenzy and 0.2 or 0)
 end
 
 function createHitbox(tag, xpos, ypos, width, height, cb)
