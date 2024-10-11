@@ -6,6 +6,7 @@ local callbacks = {}
 -- Brochure menu
 local selectingFrenzy = true
 local brochures = {}
+setVar('allowInput', false)
 
 luaDebugMode = true
 function onCreate()
@@ -179,11 +180,12 @@ function onCustomSubstateCreate(name)
 
 	    runHaxeCode([[
 		game.getLuaObject('brochure]]..i..[[').animation.finishCallback = (t) -> {
-		    if (t == 'open')
+		    if (t == 'open') {
+			setVar('allowInput', true);
 			game.callOnLuas('changeSelected', [true]);
-
-		    if (t == 'confirm')
+		    }else if (t == 'confirm') {
 			debugPrint('test');
+		    }
 		}
 	    ]])
 	end
@@ -238,12 +240,13 @@ function onCustomSubstateUpdate(name, elapsed)
     end
 
     if name == 'Brochure Menu' then
-	if keyJustPressed('left') or keyJustPressed('right') then
+	if getVar('allowInput') and (keyJustPressed('left') or keyJustPressed('right')) then
 	    changeSelected()end
 
 	setProperty('cscroll.x', getProperty('cscroll.x') - elapsed * 120)
 	setProperty('fscroll.x', getProperty('fscroll.x') - elapsed * 120)
 	if getProperty('controls.ACCEPT') then
+	    setVar('allowInput', false)
 	    playAnim(brochures[selectingFrenzy and 1 or 2], 'confirm')
 	end
     end
