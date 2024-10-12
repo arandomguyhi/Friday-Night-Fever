@@ -469,7 +469,7 @@ function onCustomSubstateCreate(name)
 end
 
 local playedAnim, playedAnimSel = false -- this is probably so dumb
-function onCustomSubstateUpdatePost(name, elapsed)
+function onCustomSubstateUpdate(name, elapsed)
     if keyboardJustPressed('SPACE') then
 	    restartSong()
 	end
@@ -543,7 +543,7 @@ function onCustomSubstateUpdatePost(name, elapsed)
 	    if selectedSong then
 		debugPrint(getProperty(selectedSong..'.text'):lower())
 		setPropertyFromClass('backend.Difficulty', 'list', {'Normal', 'Hard'})
-		loadSong(getProperty(selectedSong..'.text'), 1)
+		loadSong(getProperty(selectedSong..'.text'):gsub('\n', ''), 1)
 	    end
 	end
 
