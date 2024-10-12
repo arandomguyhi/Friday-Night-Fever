@@ -1,0 +1,146 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-10,
+				8
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle-alt",
+			"loop": false,
+			"name": "pepper idle TRUMPET"
+		},
+		{
+			"offsets": [
+				-29,
+				8
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT-alt",
+			"loop": false,
+			"name": "pepper right TRUMPET"
+		},
+		{
+			"offsets": [
+				-4,
+				-5
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "pepper down0"
+		},
+		{
+			"offsets": [
+				16,
+				4
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT-alt",
+			"loop": false,
+			"name": "pepper leftTRUMPET"
+		},
+		{
+			"offsets": [
+				3,
+				15
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "pepper up0"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "pepper idle0"
+		},
+		{
+			"offsets": [
+				9,
+				100
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "pull",
+			"loop": false,
+			"name": "pepper pull trumpet"
+		},
+		{
+			"offsets": [
+				-14,
+				0
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "pepper right0"
+		},
+		{
+			"offsets": [
+				-15,
+				1
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN-alt",
+			"loop": false,
+			"name": "pepper down TRUMPET"
+		},
+		{
+			"offsets": [
+				-8,
+				24
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP-alt",
+			"loop": false,
+			"name": "pepper up TRUMPET"
+		},
+		{
+			"offsets": [
+				13,
+				-2
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "pepper left0"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/pepper/freeplay",
+	"position": [
+		0,
+		0
+	],
+	"healthicon": "face",
+	"flip_x": false,
+	"healthbar_colors": [
+		161,
+		161,
+		161
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": false
+}

@@ -3,6 +3,9 @@ local selectedSomethin = false
 local hitboxes = {}
 local callbacks = {}
 
+-- Freeplay Menu
+local waitTimer = 0
+
 -- Brochure menu
 local selectingFrenzy = true
 local brochures = {}
@@ -90,7 +93,11 @@ function onCustomSubstateCreate(name)
 	playAnim('freeplay', 'idle')
 	setObjectCamera('freeplay', 'other')
 	addLuaSprite('freeplay')
-	createHitbox('freeplayhit', 1100, 160, 145, 225)
+	createHitbox('freeplayhit', 1100, 160, 145, 225, function()
+	    closeCustomSubstate('Main Menu')
+	    runTimer('cudnv', 1)
+	    function onTimerCompleted(tag) if tag == 'cudnv' then openCustomSubstate('Freeplay State')end end
+	end)
 
 	makeAnimatedLuaSprite('boombox', 'newMain/boombox', 779, 433)
 	addAnimationByPrefix('boombox', 'idle', 'boombox not selected', 24, true)
@@ -142,6 +149,70 @@ function onCustomSubstateCreate(name)
 	setProperty('hand.antialiasing', true)
 	setObjectCamera('hand', 'other')
 	addLuaSprite('hand', true)
+    end
+
+    if name == 'Freeplay State' then
+	makeLuaSprite('bgfreeplay', 'freeplay/bg')
+	setProperty('bgfreeplay.antialiasing', true)
+	setObjectCamera('bgfreeplay', 'other')
+	addLuaSprite('bgfreeplay')
+
+	makeAnimatedLuaSprite('peeps', 'freeplay/peeps', 19, 65)
+	addAnimationByPrefix('peeps', 'bop', 'people', 24, false)
+	playAnim('peeps', 'bop')
+	setProperty('peeps.origin.x', 0) setProperty('peeps.origin.y', 0)
+	scaleObject('peeps', 0.67, 0.67, false)
+	setProperty('peeps.antialiasing', true)
+	setObjectCamera('peeps', 'other')
+	addLuaSprite('peeps')
+
+	makeLuaSprite('chairs', 'freeplay/chairs', 319, 134)
+	setProperty('chairs.antialiasing', true)
+	setObjectCamera('chairs', 'other')
+	addLuaSprite('chairs')
+
+	createInstance('feva', 'objects.Character', {742, 115, 'bf-freeplay', true})
+	setObjectCamera('feva', 'other')
+	addInstance('feva')
+
+	createInstance('peppa', 'objects.Character', {154, 291, 'pepper-freeplay'})
+	setObjectCamera('peppa', 'other')
+	addInstance('peppa')
+
+	makeLuaSprite('table', 'freeplay/table', 257, 385)
+	setProperty('table.antialiasing', true)
+	setObjectCamera('table', 'other')
+	addLuaSprite('table')
+
+	makeAnimatedLuaSprite('hands', 'characters/pepper/hands', 259, 16)
+	addAnimationByPrefix('hands', 'idle', 'pepper', 24, false)
+	playAnim('hands', 'idle')
+	scaleObject('hands', 0.67, 0.67, false)
+	setProperty('hands.antialiasing', true)
+	setObjectCamera('hands', 'other')
+	addLuaSprite('hands')
+
+	makeAnimatedLuaSprite('classic', 'freeplay/classicm', 609, 456)
+	addAnimationByPrefix('classic', 'n', 'Classicn', 0)
+	addAnimationByPrefix('classic', 's', 'Classics', 0)
+	playAnim('classic', 'n')
+	scaleObject('classic', 0.67, 0.67, false)
+	setProperty('classic.antialiasing', true)
+	setObjectCamera('classic', 'other')
+	addLuaSprite('classic')
+
+	makeAnimatedLuaSprite('frenzy', 'freeplay/frenzym', 374, 456)
+	addAnimationByPrefix('frenzy', 'n', 'Frenzyn', 0)
+	addAnimationByPrefix('frenzy', 's', 'Frenzys', 0)
+	playAnim('frenzy', 'n')
+	scaleObject('frenzy', 0.67, 0.67, false)
+	setProperty('frenzy.antialiasing', true)
+	setObjectCamera('frenzy', 'other')
+	addLuaSprite('frenzy')
+
+	allowInput = true
+	selectingFrenzy = false
+	changeSelection(true)
     end
 
     if name == 'Brochure Menu' then
@@ -244,6 +315,35 @@ function onCustomSubstateUpdate(name, elapsed)
 	end
     end
 
+    if name == 'Freeplay State' then
+	if not allowInput then return end
+
+	if keyJustPressed('left') or keyJustPressed('right') then
+	    changeSelection()
+	    waitTimer = 0
+	end
+
+	if getProperty('controls.ACCEPT') then
+	    allowInput = false
+	    waitTimer = 0
+	    debugPrint('time to choose the song')
+	end
+
+	if waitTimer >= 20 and allowInput then
+	    loadSong(selectingFrenzy and 'Mechanical' or 'Erm', true)
+	elseif allowInput then
+	    waitTimer = waitTimer + elapsed
+	    debugPrint(waitTimer)
+	end
+
+	if curBeat % 1 == 0 then
+	    playAnim('peeps', 'bop')
+	    playAnim('hands', 'idle')
+	    callMethod('peppa.dance', {''})
+	    callMethod('feva.dance', {''})
+	end
+    end
+
     if name == 'Brochure Menu' then
 	if getVar('allowInput') and (keyJustPressed('left') or keyJustPressed('right')) then
 	    changeSelected()end
@@ -279,6 +379,18 @@ function changeSelected(firstStart)
     screenCenter('text', 'X')
     screenCenter('textBG', 'X')
     scaleObject('textBG', (getProperty('text.width') / getProperty('textBG.width')) * 1.03, getProperty('text.height') / getProperty('textBG.height'), false)
+end
+
+function changeSelection(mute)
+    if mute == nil then mute = false end
+    selectingFrenzy = not selectingFrenzy
+
+    playAnim('frenzy', selectingFrenzy and 's' or 'n')
+    playAnim('classic', selectingFrenzy and 'n' or 's')
+
+    if not mute then
+	playSound('menu/general-interact')
+    end
 end
 
 function createHitbox(tag, xpos, ypos, width, height, cb)
