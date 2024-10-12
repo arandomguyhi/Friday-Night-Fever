@@ -5,6 +5,66 @@ local callbacks = {}
 
 -- Freeplay Menu
 local waitTimer = 0
+local curSelected = 0
+initSaveData('FreeplayMenu')
+flushSaveData('FreeplayMenu')
+
+-- I HATED DOING THIS BYE
+local FREEPLAY_SONGS = {
+    {
+	image = 'week1',
+	songs = {
+	    {'Milk tea', 'gf'},
+	    {'Peastep', 'peakek'},
+	    {'Eros', 'peakek'},
+	    {'Down Horrendous', 'peakek'}
+	}
+    },
+    {
+	image = 'week2',
+	songs = {
+	    {'Start Baby', 'spooky'},
+	    {'Last Meow', 'feralspooky'},
+	    {'Bazinga', 'taki'},
+	    {'Crucify', 'taki'}
+	}
+    },
+    {
+	image = 'week2.5',
+	songs = {{'Prayer', 'taki'}, {'Bad Nun', 'taki'}}
+    },
+    {
+	image = 'week3',
+	songs = {{'Mako', 'mako'}, {'VIM', 'mako'}, {'Retribution', 'mako-demon'}}
+    },
+    {
+	image = 'week4',
+	songs = {{'Honey', 'hunni'}, {'Bunni', 'hunni'}, {'Thorow It Back', 'hunni'}}
+    },
+    {
+	image = 'week5',
+	songs = {{'Mild', 'pepper'}, {'Spice', 'pepper'}, {'Party Crasher', 'yukichi'}}
+    },
+    {
+	image = 'week6',
+	songs = {
+	    {'Ur Girl', 'mega-real'},
+	    {'Chicken Sandwich', 'mega-real'},
+	    {'Funkin God', 'flippy-real'}
+	}
+    },
+    {
+	image = 'extras',
+	songs = {
+	    {'Metamorphosis', 'peakek'},
+	    {'Void', 'peakek'},
+	    {'Down Bad', 'peakek'},
+	    {'Farmed', 'mako-demon'},
+	    {'Space Demons', 'bf-old'},
+	    {'Old Hardships', 'tea-bat'}
+	}
+    }
+}
 
 -- Brochure menu
 local selectingFrenzy = true
@@ -215,6 +275,48 @@ function onCustomSubstateCreate(name)
 	changeSelection(true)
     end
 
+    if name == 'Freeplay Menu' then
+	MenuSprite('header', 0, 0, 'header '..(getDataFromSave('FreeplayMenu', 'isFrenzy') and 'frenzy' or 'classic'))
+	screenCenter('header', 'X')
+	addLuaSprite('header')
+
+	MenuSprite('body', getProperty('header.x'), 0, 'body')
+	setProperty('body.y', getProperty('header.y') + getProperty('header.height') - 1)
+	addLuaSprite('body')
+
+	local nextLoc = 45
+	local list = getDataFromSave('FreeplayMenu', 'isFrenzy') and FREEPLAY_SONGS or FREEPLAY_SONGS
+	for v, i in ipairs(list) do
+	    local il = #i.image
+	    MenuSprite('image'..il, getProperty('body.x'), getProperty('body.y'), i.image)
+	    setProperty('image'..il..'.x', getProperty('body.x') + (getProperty('body.width') * ((v + 1) % 2 == 0 and 0.75 or 0.25)) - (getProperty('image'..il..'.width') / 2))
+	    setProperty('image'..il..'.y', getProperty('body.y') + nextLoc)
+	    addLuaSprite('image'..il)
+
+	    for ii = 1, #i.songs do
+		local song = i.songs[ii]
+		local textX = (v + 1) % 2 == 0 and getProperty('image'..il..'.x') - 20 or getProperty('image'..il..'.x') + getProperty('image'..il..'.width') + 20
+
+		makeLuaText('songText'..ii, song[1]..'\n', 0, textX, 0)
+		setTextFont('songText'..ii, 'Funkin.otf')
+		setTextSize('songText'..ii, 40)
+		if (v + 1) % 2 == 0 then
+		    setProperty('songText'..ii..'.x', getProperty('songText'..ii..'.x') - getProperty('songText'..ii..'.width'))end
+
+		if i.image == 'extras' then
+		    setProperty('songText'..ii..'.y', getProperty('image'..il..'.y') + (70 * ii))
+		else
+		    setProperty('songText'..ii..'.y', (getProperty('image'..il..'.y') + (getProperty('image'..il..'.height') / 2)) - ((getProperty('songText'..ii..'.height') + 10) * (#i.songs / 2)) + ((getProperty('songText'..ii..'.height') + 10) * ii))
+		end
+
+		setProperty('songText'..ii..'.ID', ii)
+
+		setObjectCamera('songText'..ii, 'other')
+		addLuaText('songText'..ii)
+	    end
+	end
+    end
+
     if name == 'Brochure Menu' then
 	makeLuaSprite('bg', 'story/selecting/bg')
 	setProperty('bg.antialiasing', true)
@@ -326,7 +428,11 @@ function onCustomSubstateUpdate(name, elapsed)
 	if getProperty('controls.ACCEPT') then
 	    allowInput = false
 	    waitTimer = 0
-	    debugPrint('time to choose the song')
+	    setDataFromSave('FreeplayMenu', 'isFrenzy', selectingFrenzy)
+
+	    closeCustomSubstate('Freeplay State')
+	    runTimer('cunovamente', 1)
+	    function onTimerCompleted(tag) if tag == 'cunovamente' then openCustomSubstate('Freeplay Menu')end end
 	end
 
 	if waitTimer >= 20 and allowInput then
@@ -342,6 +448,10 @@ function onCustomSubstateUpdate(name, elapsed)
 	    callMethod('peppa.dance', {''})
 	    callMethod('feva.dance', {''})
 	end
+    end
+
+    if name == 'Freeplay Menu' then
+	-- oi
     end
 
     if name == 'Brochure Menu' then
@@ -402,6 +512,16 @@ function createHitbox(tag, xpos, ypos, width, height, cb)
     table.insert(hitboxes, tag)
 
     table.insert(callbacks, {sprite = tag, callback = cb})
+end
+
+-- this is for freeplay thing
+function MenuSprite(tag, x, y, anim)
+    makeAnimatedLuaSprite(tag, 'freeplay/menu', x, y)
+    addAnimationByPrefix(tag, anim, anim, 0)
+    playAnim(tag, anim)
+    setProperty(tag..'.origin.x', 0) setProperty(tag..'.origin.y', 0)
+    scaleObject(tag, 1.8, 1.8)
+    setObjectCamera(tag, 'other')
 end
 
 function mouseOverlaps(spr)
