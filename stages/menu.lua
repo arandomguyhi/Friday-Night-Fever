@@ -287,15 +287,15 @@ function onCustomSubstateCreate(name)
 	local nextLoc = 45
 	local list = getDataFromSave('FreeplayMenu', 'isFrenzy') and FREEPLAY_SONGS or FREEPLAY_SONGS
 	for v, i in ipairs(list) do
-	    local il = #i.image
-	    MenuSprite('image'..il, getProperty('body.x'), getProperty('body.y'), i.image)
-	    setProperty('image'..il..'.x', getProperty('body.x') + (getProperty('body.width') * ((v + 1) % 2 == 0 and 0.75 or 0.25)) - (getProperty('image'..il..'.width') / 2))
-	    setProperty('image'..il..'.y', getProperty('body.y') + nextLoc)
-	    addLuaSprite('image'..il)
+	    debugPrint(v)
+	    MenuSprite('image'..v, getProperty('body.x'), getProperty('body.y'), i.image)
+	    setProperty('image'..v..'.x', getProperty('body.x') + (getProperty('body.width') * ((v + 1) % 2 == 0 and 0.75 or 0.25)) - (getProperty('image'..v..'.width') / 2))
+	    setProperty('image'..v..'.y', getProperty('body.y') + nextLoc)
+	    addLuaSprite('image'..v)
 
 	    for ii = 1, #i.songs do
 		local song = i.songs[ii]
-		local textX = (v + 1) % 2 == 0 and getProperty('image'..il..'.x') - 20 or getProperty('image'..il..'.x') + getProperty('image'..il..'.width') + 20
+		local textX = (v + 1) % 2 == 0 and getProperty('image'..v..'.x') - 20 or getProperty('image'..v..'.x') + getProperty('image'..v..'.width') + 20
 
 		makeLuaText('songText'..ii, song[1]..'\n', 0, textX, 0)
 		setTextFont('songText'..ii, 'Funkin.otf')
@@ -304,9 +304,9 @@ function onCustomSubstateCreate(name)
 		    setProperty('songText'..ii..'.x', getProperty('songText'..ii..'.x') - getProperty('songText'..ii..'.width'))end
 
 		if i.image == 'extras' then
-		    setProperty('songText'..ii..'.y', getProperty('image'..il..'.y') + (70 * ii))
+		    setProperty('songText'..ii..'.y', getProperty('image'..v..'.y') + (70 * ii))
 		else
-		    setProperty('songText'..ii..'.y', (getProperty('image'..il..'.y') + (getProperty('image'..il..'.height') / 2)) - ((getProperty('songText'..ii..'.height') + 10) * (#i.songs / 2)) + ((getProperty('songText'..ii..'.height') + 10) * ii))
+		    setProperty('songText'..ii..'.y', (getProperty('image'..v..'.y') + (getProperty('image'..v..'.height') / 2)) - ((getProperty('songText'..ii..'.height') + 10) * (#i.songs / 2)) + ((getProperty('songText'..ii..'.height') + 10) * ii))
 		end
 
 		setProperty('songText'..ii..'.ID', ii)
