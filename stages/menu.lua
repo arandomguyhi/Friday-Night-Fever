@@ -1,3 +1,5 @@
+addHaxeLibrary('FlxTypedGrpup', 'flixel.group')
+
 local firstTime = true
 local selectedSomethin = false
 local hitboxes = {}
@@ -6,6 +8,7 @@ local callbacks = {}
 -- Freeplay Menu
 local waitTimer = 0
 local curSelected = 0
+local textGrp = {}
 initSaveData('FreeplayMenu')
 flushSaveData('FreeplayMenu')
 
@@ -62,6 +65,59 @@ local FREEPLAY_SONGS = {
 	    {'Farmed', 'mako-demon'},
 	    {'Space Demons', 'bf-old'},
 	    {'Old Hardships', 'tea-bat'}
+	}
+    }
+}
+
+local FRENZY_SONGS = {
+    {
+	image = 'week7',
+	songs = {
+	    {'Preparation', 'gf'},
+	    {'C354R', 'robo-cesar'},
+	    {'Loaded', 'robo-cesar'},
+	    {'Gears', 'robofvr-final'}
+	}
+    },
+    {
+	image = 'week8',
+	songs = {
+	    {'Tranquility', 'scarlet'},
+	    {'Princess', 'scarlet'},
+	    {'Crack', 'scarlet'},
+	    {'Bloom', 'scarlet-final'}
+	}
+    },
+    {	image = 'weekhallow',
+	songs = {
+	    {'Hallow', 'hallow'},
+	    {'Eclipse', 'hallow'},
+	    {'SOUL', 'hallow'},
+	    {'Dead Mans Melody', 'toothpaste'}
+	}
+    },
+    {
+	image = 'weekminus',
+	songs = {{'Grando', 'robo-cesar'}, {'Feel The Rage', 'taki'}}
+    },
+    {
+    	image = 'week9',
+	songs = {
+	    {'DUI', 'rolldog'},
+	    {'Cosmic Swing', 'rolldog'},
+	    {'Cell From Hell', 'rolldog'},
+	    {'W00F', 'rolldog'}
+	}
+    },
+    {
+	image = 'extras',
+	songs = {
+	    {'Hardships', 'tea-bat'},
+	    {'Erm...', 'pepper'},
+	    {'Mechanical', 'scarlet'},
+	    {'Old Hallow', 'hallow'},
+	    {'Old Portrait', 'hallow'},
+	    {'Old Soul', 'hallow'}
 	}
     }
 }
@@ -285,9 +341,9 @@ function onCustomSubstateCreate(name)
 	addLuaSprite('body')
 
 	local nextLoc = 45
-	local list = getDataFromSave('FreeplayMenu', 'isFrenzy') and FREEPLAY_SONGS or FREEPLAY_SONGS
+	local list = getDataFromSave('FreeplayMenu', 'isFrenzy') and FRENZY_SONGS or FREEPLAY_SONGS
+
 	for v, i in ipairs(list) do
-	    debugPrint(v)
 	    MenuSprite('image'..v, getProperty('body.x'), getProperty('body.y'), i.image)
 	    setProperty('image'..v..'.x', getProperty('body.x') + (getProperty('body.width') * ((v + 1) % 2 == 0 and 0.75 or 0.25)) - (getProperty('image'..v..'.width') / 2))
 	    setProperty('image'..v..'.y', getProperty('body.y') + nextLoc)
@@ -297,24 +353,52 @@ function onCustomSubstateCreate(name)
 		local song = i.songs[ii]
 		local textX = (v + 1) % 2 == 0 and getProperty('image'..v..'.x') - 20 or getProperty('image'..v..'.x') + getProperty('image'..v..'.width') + 20
 
-		makeLuaText('songText'..ii, song[1]..'\n', 0, textX, 0)
-		setTextFont('songText'..ii, 'Funkin.otf')
-		setTextSize('songText'..ii, 40)
+		makeLuaText('songText'..v..'_'..ii, song[1]..'\n', 0, textX, 0)
+		setTextFont('songText'..v..'_'..ii, 'Funkin.otf')
+		setTextSize('songText'..v..'_'..ii, 40)
 		if (v + 1) % 2 == 0 then
-		    setProperty('songText'..ii..'.x', getProperty('songText'..ii..'.x') - getProperty('songText'..ii..'.width'))end
+		    setProperty('songText'..v..'_'..ii..'.x', getProperty('songText'..v..'_'..ii..'.x') - getProperty('songText'..v..'_'..ii..'.width')) end
 
 		if i.image == 'extras' then
-		    setProperty('songText'..ii..'.y', getProperty('image'..v..'.y') + (70 * ii))
+		    setProperty('songText'..v..'_'..ii..'.y', getProperty('image'..v..'.y') + (70 * ii))
 		else
-		    setProperty('songText'..ii..'.y', (getProperty('image'..v..'.y') + (getProperty('image'..v..'.height') / 2)) - ((getProperty('songText'..ii..'.height') + 10) * (#i.songs / 2)) + ((getProperty('songText'..ii..'.height') + 10) * ii))
+		    setProperty('songText'..v..'_'..ii..'.y', (getProperty('image'..v..'.y') + (getProperty('image'..v..'.height') / 2)) - ((getProperty('songText'..v..'_'..ii..'.height') + 10) * (#i.songs / 2)) + ((getProperty('songText'..v..'_'..ii..'.height') + 10) * ii))
 		end
 
-		setProperty('songText'..ii..'.ID', ii)
+		setProperty('songText'..v..'_'..ii..'.ID', #textGrp)
 
-		setObjectCamera('songText'..ii, 'other')
-		addLuaText('songText'..ii)
+		setObjectCamera('songText'..v..'_'..ii, 'other')
+		runHaxeCode("game.modchartTexts.get('songText"..v.."_"..ii.."').scrollFactor.set(1, 1);")
+		addLuaText('songText'..v..'_'..ii)
+		table.insert(textGrp, 'songText'..v..'_'..ii)
 	    end
+
+	    nextLoc = nextLoc + getProperty('image'..v..'.height') + 45
 	end
+
+	setProperty('body.scale.y', ((getProperty('body.y') + nextLoc - 45) / getProperty('body.height')) * 1.8)
+	updateHitbox('body')
+	setProperty('body.antialiasing', false)
+
+	MenuSprite('footer', getProperty('header.x'), 0, 'footer')
+	setProperty('footer.y', getProperty('body.y') + getProperty('body.height') - 1)
+	addLuaSprite('footer')
+
+	makeLuaText('diffText', '< Normal >', 0, 0, 0)
+	setTextFont('diffText', 'Funkin.otf')
+	setTextSize('diffText', 24)
+	setTextAlignment('diffText', 'center')
+	setProperty('diffText.antialiasing', true)
+	setObjectCamera('diffText', 'other')
+	runHaxeCode("game.modchartTexts.get('diffText').scrollFactor.set(1, 1);")
+	addLuaText('diffText')
+	setProperty('diffText.visible', false)
+
+	changeSelectionFree(0)
+	allowInput = false
+	setProperty('camOther.scroll.y', -500)
+	startTween('camcoisada', 'camOther', {['scroll.y'] = 0}, 0.65, {onComplete = 'allow', ease = 'elasticOut'})
+	function allow() allowInput = true end
     end
 
     if name == 'Brochure Menu' then
@@ -385,7 +469,7 @@ function onCustomSubstateCreate(name)
 end
 
 local playedAnim, playedAnimSel = false -- this is probably so dumb
-function onCustomSubstateUpdate(name, elapsed)
+function onCustomSubstateUpdatePost(name, elapsed)
     if keyboardJustPressed('SPACE') then
 	    restartSong()
 	end
@@ -439,7 +523,6 @@ function onCustomSubstateUpdate(name, elapsed)
 	    loadSong(selectingFrenzy and 'Mechanical' or 'Erm', true)
 	elseif allowInput then
 	    waitTimer = waitTimer + elapsed
-	    debugPrint(waitTimer)
 	end
 
 	if curBeat % 1 == 0 then
@@ -451,7 +534,24 @@ function onCustomSubstateUpdate(name, elapsed)
     end
 
     if name == 'Freeplay Menu' then
-	-- oi
+	if not allowInput then return end
+
+	if getProperty('controls.ACCEPT') then
+	    --allowInput = false
+	    local selectedSong = textGrp[curSelected+1]
+		--loadSong('tranquility', 1)
+	    if selectedSong then
+		debugPrint(getProperty(selectedSong..'.text'):lower())
+		setPropertyFromClass('backend.Difficulty', 'list', {'Normal', 'Hard'})
+		loadSong(getProperty(selectedSong..'.text'), 1)
+	    end
+	end
+
+	if keyJustPressed('up') then
+	    changeSelectionFree(-1)
+	elseif keyJustPressed('down') then
+	    changeSelectionFree(1)
+	end
     end
 
     if name == 'Brochure Menu' then
@@ -500,6 +600,26 @@ function changeSelection(mute)
 
     if not mute then
 	playSound('menu/general-interact')
+    end
+end
+
+function changeSelectionFree(change)
+    curSelected = curSelected + change
+
+    if curSelected >= #textGrp then
+	curSelected = 0
+    elseif curSelected < 0 then
+	curSelected = #textGrp - 1
+    end
+
+    for _, text in ipairs(textGrp) do
+	setProperty(text..'.color', getColorFromHex(curSelected == getProperty(text..'.ID') and 'FFFFFF' or '808080'))
+	if curSelected == getProperty(text..'.ID') then
+	    startTween('changeSel', 'camOther', {['scroll.y'] = getProperty(text..'.y') - 400 < 0 and 0 or getProperty(text..'.y') - 400}, 0.3, {ease = 'smoothStepInOut'})
+	    setProperty('diffText.x', getProperty(text..'.x') + (getProperty(text..'.width') / 2) - (getProperty('diffText.width') / 2))
+	    setProperty('diffText.y', getProperty(text..'.y') + getProperty(text..'.height') - 27)
+	    setProperty('diffText.visible', true)
+	end
     end
 end
 
