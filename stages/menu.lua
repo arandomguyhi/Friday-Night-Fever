@@ -140,6 +140,7 @@ end
 
 function onCreatePost()
     playMusic('freakyMenu', 1, true)
+    setProperty('dad.visible', false) setProperty('boyfriend.visible', false) setProperty('gf.visible', false)
 end
 
 function onSongStart()
@@ -332,6 +333,14 @@ function onCustomSubstateCreate(name)
     end
 
     if name == 'Freeplay Menu' then
+	runHaxeCode([[
+	    var freeCam:FlxCamera = new FlxCamera();
+	    freeCam.bgColor = 0x0;
+	    freeCam.copyFrom(camOther);
+	    FlxG.cameras.add(freeCam);
+	    setVar('freeCam', freeCam);
+	]])
+
 	MenuSprite('header', 0, 0, 'header '..(getDataFromSave('FreeplayMenu', 'isFrenzy') and 'frenzy' or 'classic'))
 	screenCenter('header', 'X')
 	addLuaSprite('header')
@@ -367,8 +376,11 @@ function onCustomSubstateCreate(name)
 
 		setProperty('songText'..v..'_'..ii..'.ID', #textGrp)
 
-		setObjectCamera('songText'..v..'_'..ii, 'other')
-		runHaxeCode("game.modchartTexts.get('songText"..v.."_"..ii.."').scrollFactor.set(1, 1);")
+		--setObjectCamera('songText'..v..'_'..ii, 'freeCam')
+		runHaxeCode([[
+		    game.modchartTexts.get('songText]]..v..[[_]]..ii..[[').camera = getVar('freeCam');
+		    game.modchartTexts.get('songText]]..v..[[_]]..ii..[[').scrollFactor.set(1, 1);
+		]])
 		addLuaText('songText'..v..'_'..ii)
 		table.insert(textGrp, 'songText'..v..'_'..ii)
 	    end
@@ -389,15 +401,18 @@ function onCustomSubstateCreate(name)
 	setTextSize('diffText', 24)
 	setTextAlignment('diffText', 'center')
 	setProperty('diffText.antialiasing', true)
-	setObjectCamera('diffText', 'other')
-	runHaxeCode("game.modchartTexts.get('diffText').scrollFactor.set(1, 1);")
+	--setObjectCamera('diffText', 'freeCam')
+	runHaxeCode([[
+	    game.modchartTexts.get('diffText').camera = getVar('freeCam');
+	    game.modchartTexts.get('diffText').scrollFactor.set(1, 1);
+	]])
 	addLuaText('diffText')
 	setProperty('diffText.visible', false)
 
 	changeSelectionFree(0)
 	allowInput = false
-	setProperty('camOther.scroll.y', -500)
-	startTween('camcoisada', 'camOther', {['scroll.y'] = 0}, 0.65, {onComplete = 'allow', ease = 'elasticOut'})
+	setProperty('freeCam.scroll.y', -500)
+	startTween('camcoisada', 'freeCam', {['scroll.y'] = 0}, 0.65, {onComplete = 'allow', ease = 'elasticOut'})
 	function allow() allowInput = true end
     end
 
@@ -537,11 +552,9 @@ function onCustomSubstateUpdate(name, elapsed)
 	if not allowInput then return end
 
 	if getProperty('controls.ACCEPT') then
-	    --allowInput = false
+	    allowInput = false
 	    local selectedSong = textGrp[curSelected+1]
-		--loadSong('tranquility', 1)
 	    if selectedSong then
-		debugPrint(getProperty(selectedSong..'.text'):lower())
 		setPropertyFromClass('backend.Difficulty', 'list', {'Normal', 'Hard'})
 		loadSong(getProperty(selectedSong..'.text'):gsub('\n', ''), 1)
 	    end
@@ -615,7 +628,7 @@ function changeSelectionFree(change)
     for _, text in ipairs(textGrp) do
 	setProperty(text..'.color', getColorFromHex(curSelected == getProperty(text..'.ID') and 'FFFFFF' or '808080'))
 	if curSelected == getProperty(text..'.ID') then
-	    startTween('changeSel', 'camOther', {['scroll.y'] = getProperty(text..'.y') - 400 < 0 and 0 or getProperty(text..'.y') - 400}, 0.3, {ease = 'smoothStepInOut'})
+	    startTween('changeSel', 'freeCam', {['scroll.y'] = getProperty(text..'.y') - 400 < 0 and 0 or getProperty(text..'.y') - 400}, 0.3, {ease = 'smoothStepInOut'})
 	    setProperty('diffText.x', getProperty(text..'.x') + (getProperty(text..'.width') / 2) - (getProperty('diffText.width') / 2))
 	    setProperty('diffText.y', getProperty(text..'.y') + getProperty(text..'.height') - 27)
 	    setProperty('diffText.visible', true)
@@ -641,7 +654,8 @@ function MenuSprite(tag, x, y, anim)
     playAnim(tag, anim)
     setProperty(tag..'.origin.x', 0) setProperty(tag..'.origin.y', 0)
     scaleObject(tag, 1.8, 1.8)
-    setObjectCamera(tag, 'other')
+    --setObjectCamera(tag, 'freeCam')
+    runHaxeCode("game.getLuaObject('"..tag.."').camera = getVar('freeCam');")
 end
 
 function mouseOverlaps(spr)
