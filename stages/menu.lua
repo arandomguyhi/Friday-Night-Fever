@@ -132,26 +132,8 @@ initSaveData('StoryMenuState')
 flushSaveData('StoryMenuState')
 
 luaDebugMode = true
-function onCreate()
-    setProperty('skipCountdown', true)
-    setProperty('camGame.visible', false)
-    setProperty('camHUD.visible', false) -- i don't need these cams for now
-end
-
-function onCreatePost()
-    playMusic('freakyMenu', 1, true)
-    setProperty('dad.visible', false) setProperty('boyfriend.visible', false) setProperty('gf.visible', false)
-end
-
-function onSongStart()
-    openCustomSubstate('Main Menu')
-end
-
-function onPause() return Function_Stop end
-
-function onCustomSubstateCreate(name)
-    if name == 'Main Menu' then
-	makeLuaSprite('tunnelBG', 'newMain/subway_bg_2', 0, -12)
+function createMainMenuState()
+        makeLuaSprite('tunnelBG', 'newMain/subway_bg_2', 0, -12)
 	setObjectCamera('tunnelBG', 'other')
 	addLuaSprite('tunnelBG')
 
@@ -266,9 +248,10 @@ function onCustomSubstateCreate(name)
 	setProperty('hand.antialiasing', true)
 	setObjectCamera('hand', 'other')
 	addLuaSprite('hand', true)
-    end
+end
 
-    if name == 'Freeplay State' then
+local freeplayStateAssets = {'bgfreeplay', 'peeps', 'chairs', 'feva', 'peppa', 'table', 'hands', 'classic', 'frenzy'}
+function createFreeplayState()
 	makeLuaSprite('bgfreeplay', 'freeplay/bg')
 	setProperty('bgfreeplay.antialiasing', true)
 	setObjectCamera('bgfreeplay', 'other')
@@ -326,14 +309,11 @@ function onCustomSubstateCreate(name)
 	setProperty('frenzy.antialiasing', true)
 	setObjectCamera('frenzy', 'other')
 	addLuaSprite('frenzy')
+end
 
-	allowInput = true
-	selectingFrenzy = false
-	changeSelection(true)
-    end
-
-    if name == 'Freeplay Menu' then
-	runHaxeCode([[
+local freeplayMenuAssets = {'header', 'body', 'footer', 'diffText'}
+function createFreeplayMenu()
+    runHaxeCode([[
 	    var freeCam:FlxCamera = new FlxCamera();
 	    freeCam.bgColor = 0x0;
 	    freeCam.copyFrom(camOther);
@@ -341,22 +321,89 @@ function onCustomSubstateCreate(name)
 	    setVar('freeCam', freeCam);
 	]])
 
-	MenuSprite('header', 0, 0, 'header '..(getDataFromSave('FreeplayMenu', 'isFrenzy') and 'frenzy' or 'classic'))
+	makeAnimatedLuaSprite('header', 'freeplay/menu')
+	addAnimationByPrefix('header', 'header frenzy', 'header frenzy', 0)
+	addAnimationByPrefix('header', 'header classic', 'header classic', 0)
+	playAnim('header', 'header classic')
+	setProperty('header.origin.x', 0) setProperty('header.origin.y', 0)
+	scaleObject('header', 1.8, 1.8)
+	runHaxeCode("game.getLuaObject('header').camera = getVar('freeCam');")
 	screenCenter('header', 'X')
 	addLuaSprite('header')
 
 	MenuSprite('body', getProperty('header.x'), 0, 'body')
-	setProperty('body.y', getProperty('header.y') + getProperty('header.height') - 1)
 	addLuaSprite('body')
+
+	MenuSprite('footer', getProperty('header.x'), 0, 'footer')
+	addLuaSprite('footer')
+
+	makeLuaText('diffText', '< Normal >', 0, 0, 0)
+	setTextFont('diffText', 'Funkin.otf')
+	setTextSize('diffText', 24)
+	setTextAlignment('diffText', 'center')
+	setProperty('diffText.antialiasing', true)
+	runHaxeCode([[
+	    game.modchartTexts.get('diffText').camera = getVar('freeCam');
+	    game.modchartTexts.get('diffText').scrollFactor.set(1, 1);
+	]])
+	addLuaText('diffText')
+	setProperty('diffText.visible', false)
+end
+
+function onCreate()
+    setProperty('skipCountdown', true)
+    setProperty('camGame.visible', false)
+    setProperty('camHUD.visible', false) -- i don't need these cams for now
+
+    createMainMenuState()
+
+    createFreeplayState()
+    for _, i in ipairs(freeplayStateAssets) do setProperty(i..'.alpha', 0.001) end
+
+    createFreeplayMenu()
+    for _, i in ipairs(freeplayMenuAssets) do setProperty(i..'.alpha', 0.001) end
+end
+
+function onCreatePost()
+    playMusic('freakyMenu', 1, true)
+    setProperty('dad.visible', false) setProperty('boyfriend.visible', false) setProperty('gf.visible', false)
+end
+
+function onSongStart()
+    openCustomSubstate('Main Menu')
+end
+
+function onPause() return Function_Stop end
+
+function onCustomSubstateCreate(name)
+    if name == 'Main Menu' then
+	--hi?
+    end
+
+    if name == 'Freeplay State' then
+	for _, i in ipairs(freeplayStateAssets) do
+	    setProperty(i..'.alpha', 1)
+	end
+
+	allowInput = true
+	selectingFrenzy = false
+	changeSelection(true)
+    end
+
+    if name == 'Freeplay Menu' then
+	playAnim('header', 'header '..(getDataFromSave('FreeplayMenu', 'isFrenzy') and 'frenzy' or 'classic'), true)	
+	setProperty('body.y', getProperty('header.y') + getProperty('header.height') - 1)
 
 	local nextLoc = 45
 	local list = getDataFromSave('FreeplayMenu', 'isFrenzy') and FRENZY_SONGS or FREEPLAY_SONGS
+	setVar('songList', list)
 
 	for v, i in ipairs(list) do
 	    MenuSprite('image'..v, getProperty('body.x'), getProperty('body.y'), i.image)
 	    setProperty('image'..v..'.x', getProperty('body.x') + (getProperty('body.width') * ((v + 1) % 2 == 0 and 0.75 or 0.25)) - (getProperty('image'..v..'.width') / 2))
 	    setProperty('image'..v..'.y', getProperty('body.y') + nextLoc)
 	    addLuaSprite('image'..v)
+	    table.insert(freeplayMenuAssets, 'image'..v)
 
 	    for ii = 1, #i.songs do
 		local song = i.songs[ii]
@@ -376,13 +423,13 @@ function onCustomSubstateCreate(name)
 
 		setProperty('songText'..v..'_'..ii..'.ID', #textGrp)
 
-		--setObjectCamera('songText'..v..'_'..ii, 'freeCam')
 		runHaxeCode([[
 		    game.modchartTexts.get('songText]]..v..[[_]]..ii..[[').camera = getVar('freeCam');
 		    game.modchartTexts.get('songText]]..v..[[_]]..ii..[[').scrollFactor.set(1, 1);
 		]])
 		addLuaText('songText'..v..'_'..ii)
 		table.insert(textGrp, 'songText'..v..'_'..ii)
+		table.insert(freeplayMenuAssets, 'songText'..v..'_'..ii)
 	    end
 
 	    nextLoc = nextLoc + getProperty('image'..v..'.height') + 45
@@ -391,29 +438,18 @@ function onCustomSubstateCreate(name)
 	setProperty('body.scale.y', ((getProperty('body.y') + nextLoc - 45) / getProperty('body.height')) * 1.8)
 	updateHitbox('body')
 	setProperty('body.antialiasing', false)
-
-	MenuSprite('footer', getProperty('header.x'), 0, 'footer')
 	setProperty('footer.y', getProperty('body.y') + getProperty('body.height') - 1)
-	addLuaSprite('footer')
 
-	makeLuaText('diffText', '< Normal >', 0, 0, 0)
-	setTextFont('diffText', 'Funkin.otf')
-	setTextSize('diffText', 24)
-	setTextAlignment('diffText', 'center')
-	setProperty('diffText.antialiasing', true)
-	--setObjectCamera('diffText', 'freeCam')
-	runHaxeCode([[
-	    game.modchartTexts.get('diffText').camera = getVar('freeCam');
-	    game.modchartTexts.get('diffText').scrollFactor.set(1, 1);
-	]])
-	addLuaText('diffText')
-	setProperty('diffText.visible', false)
+	for _, i in ipairs(freeplayMenuAssets) do
+	    setProperty(i..'.alpha', 1)
+	end
 
-	changeSelectionFree(0)
+	changeSelectionFree()
 	allowInput = false
 	setProperty('freeCam.scroll.y', -500)
-	startTween('camcoisada', 'freeCam', {['scroll.y'] = 0}, 0.65, {onComplete = 'allow', ease = 'elasticOut'})
-	function allow() allowInput = true end
+	startTween('camcoisada', 'freeCam', {['scroll.y'] = 0}, 0.65, {ease = 'elasticOut'})
+	runTimer('allow', 0.65)
+	function onTimerCompleted(tag) if tag == 'allow' then allowInput = true end end
     end
 
     if name == 'Brochure Menu' then
@@ -564,6 +600,26 @@ function onCustomSubstateUpdate(name, elapsed)
 	    changeSelectionFree(-1)
 	elseif keyJustPressed('down') then
 	    changeSelectionFree(1)
+	elseif getProperty('controls.BACK') then
+	    allowInput = false
+	    closeCustomSubstate('Freeplay Menu')
+	    startTween('closin', 'freeCam', {['scroll.y'] = -950}, 0.65, {onComplete = 'openfreeplaystate', ease = 'quadInOut'})
+	    function openfreeplaystate()
+		for _, i in ipairs(freeplayMenuAssets) do
+		    setProperty(i..'.alpha', 0.001)
+		end
+		for _, i in ipairs(getVar('songList')) do removeLuaSprite('image'.._) end
+		for _, i in ipairs(textGrp) do removeLuaText(i) end
+		textGrp = {}
+		openCustomSubstate('Freeplay State')
+	    end
+	end
+
+	if curBeat % 1 == 0 then
+	    playAnim('peeps', 'bop')
+	    playAnim('hands', 'idle')
+	    callMethod('peppa.dance', {''})
+	    callMethod('feva.dance', {''})
 	end
     end
 
@@ -617,6 +673,7 @@ function changeSelection(mute)
 end
 
 function changeSelectionFree(change)
+    if change == nil then change = 0 curSelected = 0 end
     curSelected = curSelected + change
 
     if curSelected >= #textGrp then
@@ -654,7 +711,6 @@ function MenuSprite(tag, x, y, anim)
     playAnim(tag, anim)
     setProperty(tag..'.origin.x', 0) setProperty(tag..'.origin.y', 0)
     scaleObject(tag, 1.8, 1.8)
-    --setObjectCamera(tag, 'freeCam')
     runHaxeCode("game.getLuaObject('"..tag.."').camera = getVar('freeCam');")
 end
 
