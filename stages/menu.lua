@@ -9,6 +9,7 @@ local callbacks = {}
 local waitTimer = 0
 local curSelected = 0
 local textGrp = {}
+local icons = {}
 initSaveData('FreeplayMenu')
 flushSaveData('FreeplayMenu')
 
@@ -340,6 +341,7 @@ function createFreeplayMenu()
 	makeLuaText('diffText', '< Normal >', 0, 0, 0)
 	setTextFont('diffText', 'Funkin.otf')
 	setTextSize('diffText', 24)
+	setTextBorder('diffText', 0, 'FFFFFFF')
 	setTextAlignment('diffText', 'center')
 	setProperty('diffText.antialiasing', true)
 	runHaxeCode([[
@@ -412,16 +414,31 @@ function onCustomSubstateCreate(name)
 		makeLuaText('songText'..v..'_'..ii, song[1]..'\n', 0, textX, 0)
 		setTextFont('songText'..v..'_'..ii, 'Funkin.otf')
 		setTextSize('songText'..v..'_'..ii, 40)
+		setTextBorder('songText'..v..'_'..ii, 0, 'FFFFFF')
 		if (v + 1) % 2 == 0 then
 		    setProperty('songText'..v..'_'..ii..'.x', getProperty('songText'..v..'_'..ii..'.x') - getProperty('songText'..v..'_'..ii..'.width')) end
 
 		if i.image == 'extras' then
 		    setProperty('songText'..v..'_'..ii..'.y', getProperty('image'..v..'.y') + (70 * ii))
 		else
-		    setProperty('songText'..v..'_'..ii..'.y', (getProperty('image'..v..'.y') + (getProperty('image'..v..'.height') / 2)) - ((getProperty('songText'..v..'_'..ii..'.height') + 10) * (#i.songs / 2)) + ((getProperty('songText'..v..'_'..ii..'.height') + 10) * ii))
+		    setProperty('songText'..v..'_'..ii..'.y', (getProperty('image'..v..'.y') + (getProperty('image'..v..'.height') / 2)) - ((getProperty('songText'..v..'_'..ii..'.height') + 20) * (#i.songs)) + ((getProperty('songText'..v..'_'..ii..'.height') + 40) * ii))
 		end
 
 		setProperty('songText'..v..'_'..ii..'.ID', #textGrp)
+
+		local songText = 'songText'..v..'_'..ii
+		makeLuaSprite('icon'..v..'_'..ii)
+		loadGraphic('icon'..v..'_'..ii, 'icons/icon-'..song[2], 150, 150)
+		addAnimation('icon'..v..'_'..ii, 'neutral', {0}, 0, false)
+		playAnim('icon'..v..'_'..ii, 'neutral')
+	 	setProperty('icon'..v..'_'..ii..'.origin.x', 0)
+		setProperty('icon'..v..'_'..ii..'.origin.y', 0)
+		scaleObject('icon'..v..'_'..ii, 0.6, 0.6)
+		setProperty('icon'..v..'_'..ii..'.x', getProperty('image'..v..'.x') > getProperty(songText..'.x') and getProperty(songText..'.x') - getProperty('icon'..v..'_'..ii..'.width') or getProperty(songText..'.x') + getProperty(songText..'.width') + 5)
+		setProperty('icon'..v..'_'..ii..'.y', getProperty(songText..'.y') - (getProperty('icon'..v..'_'..ii..'.height') / 2) + 20)
+		addLuaSprite('icon'..v..'_'..ii)
+		table.insert(icons, 'icon'..v..'_'..ii)
+		table.insert(freeplayMenuAssets, 'icon'..v..'_'..ii)
 
 		runHaxeCode([[
 		    game.modchartTexts.get('songText]]..v..[[_]]..ii..[[').camera = getVar('freeCam');
@@ -610,7 +627,9 @@ function onCustomSubstateUpdate(name, elapsed)
 		end
 		for _, i in ipairs(getVar('songList')) do removeLuaSprite('image'.._) end
 		for _, i in ipairs(textGrp) do removeLuaText(i) end
+		for _, i in ipairs(icons) do removeLuaSprite(i) end
 		textGrp = {}
+		icons = {}
 		openCustomSubstate('Freeplay State')
 	    end
 	end
@@ -684,10 +703,11 @@ function changeSelectionFree(change)
 
     for _, text in ipairs(textGrp) do
 	setProperty(text..'.color', getColorFromHex(curSelected == getProperty(text..'.ID') and 'FFFFFF' or '808080'))
+	setProperty(icons[getProperty(text..'.ID')+1]..'.alpha', curSelected == getProperty(text..'.ID') and 1 or 0.7)
 	if curSelected == getProperty(text..'.ID') then
 	    startTween('changeSel', 'freeCam', {['scroll.y'] = getProperty(text..'.y') - 400 < 0 and 0 or getProperty(text..'.y') - 400}, 0.3, {ease = 'smoothStepInOut'})
 	    setProperty('diffText.x', getProperty(text..'.x') + (getProperty(text..'.width') / 2) - (getProperty('diffText.width') / 2))
-	    setProperty('diffText.y', getProperty(text..'.y') + getProperty(text..'.height') - 27)
+	    setProperty('diffText.y', getProperty(text..'.y') + getProperty(text..'.height'))
 	    setProperty('diffText.visible', true)
 	end
     end
