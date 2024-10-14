@@ -25,9 +25,20 @@ function onCreatePost()
 
     setProperty('timeBar.visible', false)
     setProperty('timeTxt.visible', false)
+    setTextFont('scoreTxt', 'vcr.ttf')
+
+    loadGraphic('iconP1', 'icons/icon-'..getProperty('boyfriend.healthIcon'), 150, 150)
+    addAnimation('iconP1', 'idle', {0, 1, 2}, 0, false)
+    setProperty('iconP1.flipX', true)
+
+    loadGraphic('iconP2', 'icons/icon-'..getProperty('dad.healthIcon'), 150, 150)
+    addAnimation('iconP2', 'idle', {0, 1, 2}, 0, false)
+
+    setProperty('iconP1.iconOffsets[0]', getProperty('iconP1.iconOffsets[0]') - 45)
+    setProperty('iconP2.iconOffsets[0]', getProperty('iconP2.iconOffsets[0]') - 45)
 end
 
-function onUpdate()
+function onUpdate(elapsed)
     -- not part of the hud, just some global vars
     dadCamX = runHaxeCode("return dad.getMidpoint().x + 150 + dad.cameraPosition[0] + opponentCameraOffset[0];") -- doing with rhc cuz im lazy
     dadCamY = runHaxeCode("return dad.getMidpoint().y - 100 + dad.cameraPosition[1] + opponentCameraOffset[1];")
@@ -38,6 +49,13 @@ function onUpdate()
 end
 
 function onUpdatePost()
+    if getHealth() > 1.6 then
+	setProperty('iconP1.animation.curAnim.curFrame', 2)
+    elseif getHealth() < 0.4 then
+	setProperty('iconP2.animation.curAnim.curFrame', 2)
+    end
+    setTextSize('scoreTxt', 18)
+
     for _, ratin in ipairs(wifeConditions) do
 	if getProperty('ratingPercent') >= ratin[2] then
 	    wife = ratin[1]

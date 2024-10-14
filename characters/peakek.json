@@ -2,13 +2,24 @@
 	"animations": [
 		{
 			"offsets": [
+				0,
+				0
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": true,
+			"name": "Dad idle dance"
+		},
+		{
+			"offsets": [
 				-181,
 				-2
 			],
 			"indices": [],
 			"fps": 24,
 			"anim": "singRIGHT",
-			"loop": false,
+			"loop": true,
 			"name": "Dad Sing Note RIGHT"
 		},
 		{
@@ -19,7 +30,7 @@
 			"indices": [],
 			"fps": 24,
 			"anim": "singDOWN",
-			"loop": false,
+			"loop": true,
 			"name": "Dad Sing Note DOWN"
 		},
 		{
@@ -30,7 +41,7 @@
 			"indices": [],
 			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false,
+			"loop": true,
 			"name": "dad sing note LEFT"
 		},
 		{
@@ -41,29 +52,18 @@
 			"indices": [],
 			"fps": 24,
 			"anim": "singUP",
-			"loop": false,
-			"name": "Dad Sing note UP"
-		},
-		{
-			"offsets": [
-				0,
-				0
-			],
-			"indices": [],
-			"fps": 24,
-			"anim": "idle",
 			"loop": true,
-			"name": "Dad idle dance"
+			"name": "Dad Sing note UP"
 		}
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/peakek/peakek",
 	"position": [
-		0,
-		0
+		-100,
+		15
 	],
-	"healthicon": "dad",
+	"healthicon": "peakek",
 	"flip_x": false,
 	"healthbar_colors": [
 		175,
@@ -71,7 +71,7 @@
 		206
 	],
 	"camera_position": [
-		0,
+		251,
 		0
 	],
 	"sing_duration": 6.1,
