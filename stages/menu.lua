@@ -608,7 +608,7 @@ function onCustomSubstateUpdate(name, elapsed)
 	    allowInput = false
 	    local selectedSong = textGrp[curSelected+1]
 	    if selectedSong then
-	    	loadFreeplaySong(getProperty(selectedSong..'.text'):gsub('\n', ''), 1)
+	    	loadFreeplaySong(getProperty(selectedSong..'.text'), 1)
 	    end
 	end
 
@@ -718,11 +718,12 @@ function changeSelectionFree(change)
 end
 
 function loadFreeplaySong(song, diff)
+    song = stringTrim(song:gsub('\n', '')):gsub('%.%.%.', ''):lower()
     setPropertyFromClass('backend.Difficulty', 'list', {'Normal', 'Hard'})
 
     startTween('loadieTime', 'freeCam', {['scroll.y'] = -950}, 0.65, {ease = 'cubeInOut', onComplete = 'loadTime'})
     function loadTime()
-	if song ~= 'Mechanical' then
+	if song ~= 'mechanical' and song ~= 'erm' then
 	    makeAnimatedLuaSprite('enter', 'freeplay/freeplayenter', 0, 290)
 	    addAnimationByPrefix('enter', 'cover', 'cover', 24, false)
 	    playAnim('enter', 'cover')
@@ -750,7 +751,7 @@ function loadFreeplaySong(song, diff)
 	    closeCustomSubstate('Freeplay Menu')
 	    setPropertyFromClass('flixel.addons.transition.FlxTransitionableState', 'skipNextTransOut', true)
 	    setPropertyFromClass('flixel.addons.transition.FlxTransitionableState', 'skipNextTransIn', true)
-	    loadSong('Mechanical', 1)
+	    loadSong(song, diff)
 	end
     end
 end
