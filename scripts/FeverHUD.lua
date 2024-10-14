@@ -44,8 +44,10 @@ function onUpdate(elapsed)
     dadCamY = runHaxeCode("return dad.getMidpoint().y - 100 + dad.cameraPosition[1] + opponentCameraOffset[1];")
     bfCamX = runHaxeCode("return boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0] + boyfriendCameraOffset[0];")
     bfCamY = runHaxeCode("return boyfriend.getMidpoint().y - 100 + boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];")
+    gfCamX = runHaxeCode("return gf.getMidpoint().x + gf.cameraPosition[0] + girlfriendCameraOffset[0];")
+    gfCamY = runHaxeCode("return gf.getMidpoint().y + gf.cameraPosition[1] + girlfriendCameraOffset[1];")
 
-    setVar('dadCamX', dadCamX) setVar('dadCamY', dadCamY) setVar('bfCamX', bfCamX) setVar('bfCamY', bfCamY)
+    setVar('dadCamX', dadCamX) setVar('dadCamY', dadCamY) setVar('bfCamX', bfCamX) setVar('bfCamY', bfCamY) setVar('gfCamX', gfCamX) setVar('gfCamY', gfCamY)
 end
 
 function onUpdatePost()

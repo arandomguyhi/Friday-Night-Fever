@@ -1,4 +1,6 @@
 function onCreate()
+    setProperty('camZooming', false)
+
     makeLuaSprite('church', 'bg_taki', -200, -100)
     setProperty('church.antialiasing', true)
     addLuaSprite('church')
