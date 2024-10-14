@@ -353,7 +353,7 @@ function createText(text, size)
 end
 
 function setCamZoom(zoomAmount)
-    setPropertyFromClass('flixel.FlxG', 'zoom', zoomAmount)
+    setProperty('camGame.zoom', zoomAmount)
 end
 
 function setHudZoom(zoomAmount)
