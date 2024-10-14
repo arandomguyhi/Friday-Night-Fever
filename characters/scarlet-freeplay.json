@@ -1,59 +1,70 @@
 {
 	"animations": [
 		{
+			"loop": false,
 			"offsets": [
 				0,
 				0
 			],
-			"indices": [],
-			"fps": 24,
 			"anim": "idle",
-			"loop": false,
-			"name": "scarlet idle"
+			"fps": 24,
+			"name": "scarlet idle",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				2,
 				-41
 			],
-			"indices": [],
-			"fps": 24,
 			"anim": "singRIGHT",
-			"loop": false,
-			"name": "scarlet right"
+			"fps": 24,
+			"name": "scarlet right",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				9,
 				-15
 			],
-			"indices": [],
-			"fps": 24,
 			"anim": "singDOWN",
-			"loop": false,
-			"name": "scarlet down"
+			"fps": 24,
+			"name": "scarlet down",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				36,
 				-8
 			],
-			"indices": [],
-			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false,
-			"name": "scarlet left"
+			"fps": 24,
+			"name": "scarlet left",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				-4,
 				17
 			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "scarlet up",
+			"indices": []
+		},
+		{
+			"offsets": [
+				0,
+				100
+			],
 			"indices": [],
 			"fps": 24,
-			"anim": "singUP",
+			"anim": "arrive",
 			"loop": false,
-			"name": "scarlet up"
+			"name": "scarlet anim"
 		}
 	],
 	"vocals_file": "",
@@ -63,12 +74,12 @@
 		0,
 		0
 	],
-	"healthicon": "face",
+	"healthicon": "scarlet",
 	"flip_x": false,
 	"healthbar_colors": [
-		161,
-		161,
-		161
+		224,
+		89,
+		177
 	],
 	"camera_position": [
 		0,

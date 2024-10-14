@@ -608,7 +608,7 @@ function onCustomSubstateUpdate(name, elapsed)
 	    allowInput = false
 	    local selectedSong = textGrp[curSelected+1]
 	    if selectedSong then
-		loadFreeplaySong(getProperty(selectedSong..'.text'):gsub('\n', ''), 1)
+	    	loadFreeplaySong(getProperty(selectedSong..'.text'):gsub('\n', ''), 1)
 	    end
 	end
 
@@ -621,14 +621,6 @@ function onCustomSubstateUpdate(name, elapsed)
 	    closeCustomSubstate('Freeplay Menu')
 	    startTween('closin', 'freeCam', {['scroll.y'] = -950}, 0.65, {onComplete = 'openfreeplaystate', ease = 'quadInOut'})
 	    function openfreeplaystate()
-		for _, i in ipairs(freeplayMenuAssets) do
-		    setProperty(i..'.alpha', 0.001)
-		end
-		for _, i in ipairs(getVar('songList')) do removeLuaSprite('image'.._) end
-		for _, i in ipairs(textGrp) do removeLuaText(i) end
-		for _, i in ipairs(icons) do removeLuaSprite(i) end
-		textGrp = {}
-		icons = {}
 		openCustomSubstate('Freeplay State')
 	    end
 	end
@@ -653,6 +645,19 @@ function onCustomSubstateUpdate(name, elapsed)
 	end
 
 	setVar('selectingFrenzy', selectingFrenzy)
+    end
+end
+
+function onCustomSubstateDestroy(name)
+    if name == 'Freeplay Menu' then
+	for _, i in ipairs(freeplayMenuAssets) do
+	    setProperty(i..'.alpha', 0.001)
+	end
+	for _, i in ipairs(getVar('songList')) do removeLuaSprite('image'.._) end
+	for _, i in ipairs(textGrp) do removeLuaText(i) end
+	for _, i in ipairs(icons) do removeLuaSprite(i) end
+	textGrp = {}
+	icons = {}
     end
 end
 
@@ -717,28 +722,35 @@ function loadFreeplaySong(song, diff)
 
     startTween('loadieTime', 'freeCam', {['scroll.y'] = -950}, 0.65, {ease = 'cubeInOut', onComplete = 'loadTime'})
     function loadTime()
-	makeAnimatedLuaSprite('enter', 'freeplay/freeplayenter', 0, 290)
-	addAnimationByPrefix('enter', 'cover', 'cover', 24, false)
-	playAnim('enter', 'cover')
-	callMethod('enter.animation.pause', {''})
-	setProperty('enter.antialiasing', true)
-	scaleObject('enter', 0.67, 0.67, false)
-	setObjectCamera('enter', 'other')
-	addLuaSprite('enter')
-	screenCenter('enter', 'X')
+	if song ~= 'Mechanical' then
+	    makeAnimatedLuaSprite('enter', 'freeplay/freeplayenter', 0, 290)
+	    addAnimationByPrefix('enter', 'cover', 'cover', 24, false)
+	    playAnim('enter', 'cover')
+	    callMethod('enter.animation.pause', {''})
+	    setProperty('enter.antialiasing', true)
+	    scaleObject('enter', 0.67, 0.67, false)
+	    setObjectCamera('enter', 'other')
+	    addLuaSprite('enter')
+	    screenCenter('enter', 'X')
 
-	setProperty('enter.alpha', 0.001)
-	setProperty('enter.y', getProperty('enter.y') - 60)
-	startTween('served', 'enter', {y = getProperty('enter.y') + 60, alpha = 1}, 0.4, {onComplete = 'loadCurrentSong'})
-	function loadCurrentSong()
-	    callMethod('enter.animation.resume', {''})
-	    runTimer('whyarewe...', 0.9)
-	    function onTimerCompleted(tag) if tag == 'whyarewe...' then startTween('enterit', 'camOther', {['scroll.y'] = 175, zoom = 12}, 0.6, {ease = 'cubeInOut'})end end
-	    runHaxeCode([[
-		game.getLuaObject('enter').animation.finishCallback = (a) -> {
-		    game.callOnLuas('loadSong', [']]..song..[[', ]]..tonumber(diff)..[[]);
-		}
-	    ]])
+	    setProperty('enter.alpha', 0.001)
+	    setProperty('enter.y', getProperty('enter.y') - 60)
+	    startTween('served', 'enter', {y = getProperty('enter.y') + 60, alpha = 1}, 0.4, {onComplete = 'loadCurrentSong'})
+	    function loadCurrentSong()
+		callMethod('enter.animation.resume', {''})
+		runTimer('whyarewe...', 0.9)
+		function onTimerCompleted(tag) if tag == 'whyarewe...' then startTween('enterit', 'camOther', {['scroll.y'] = 175, zoom = 12}, 0.6, {ease = 'cubeInOut'})end end
+		runHaxeCode([[
+		    game.getLuaObject('enter').animation.finishCallback = (a) -> {
+			game.callOnLuas('loadSong', [']]..song..[[', ]]..tonumber(diff)..[[]);
+		    }
+	    	]])
+	    end
+	else
+	    closeCustomSubstate('Freeplay Menu')
+	    setPropertyFromClass('flixel.addons.transition.FlxTransitionableState', 'skipNextTransOut', true)
+	    setPropertyFromClass('flixel.addons.transition.FlxTransitionableState', 'skipNextTransIn', true)
+	    loadSong('Mechanical', 1)
 	end
     end
 end

@@ -1,5 +1,7 @@
 luaDebugMode = true
 function onCreate()
+    setProperty('isCameraOnForcedPos', true)
+
     setProperty('camGame.zoom', 1)
     setProperty('camHUD.alpha', 0)
     startTween('hudalphie', 'camHUD', {alpha = 1}, 0.76, {ease = 'quadInOut'})
@@ -30,6 +32,7 @@ function onCreate()
 	playAnim('hands', 'come')
 	scaleObject('hands', 0.67, 0.67, false)
 	setProperty('hands.antialiasing', true)
+	addLuaSprite('hands')
     end
 
     makeAnimatedLuaSprite('phands', 'characters/pepper/hands', 259, 16)
@@ -59,6 +62,7 @@ function onCreatePost()
 
     setProperty('dad.x', getProperty('dad.x') + 250)
     setProperty('dad.y', getProperty('dad.y') - 110)
+    setObjectOrder('dadGroup', getObjectOrder('seats'))
 
     makeLuaSprite('table', 'freeplay/table', 257, 385)
     setProperty('table.antialiasing', true)
@@ -68,8 +72,9 @@ function onCreatePost()
 
     if luaSpriteExists('hands') then
 	setProperty('hands.visible', false)
-	addLuaSprite('hands', true)
-	callMethod('hands.setPosition', {getProperty('bg.x') + 255, getProperty('bg.y') + 350})
+	setObjectOrder('hands', getObjectOrder('frenzy')+1)
+	setProperty('hands.x', getProperty('bg.x') + 255)
+	setProperty('hands.y', getProperty('bg.y') + 350)
     end
     addLuaSprite('phands', true)
 
@@ -81,7 +86,6 @@ function onCreatePost()
 	]])
     end
 
-    setProperty('isCameraOnForcedPos', true)
     setProperty('camGame.scroll.x', 0) setProperty('camGame.scroll.y', 0)
     setProperty('camFollow.x', 640) setProperty('camFollow.y', 360)
 end
@@ -92,4 +96,10 @@ function onBeatHit()
 
     playAnim('peeps', 'bop')
     playAnim('phands', 'idle')
+end
+
+function onUpdate()
+    -- come on, it's not that dumb, i'm never goin to change the camera pos in this stage
+    setProperty('camGame.scroll.x', 0) setProperty('camGame.scroll.y', 0)
+    setProperty('camFollow.x', 640) setProperty('camFollow.y', 360)
 end

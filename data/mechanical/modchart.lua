@@ -2,7 +2,20 @@ local strumLine1Visible = true
 
 luaDebugMode = true
 
-function onCreate() setProperty('camZoomingMult', 0) end
+function onCreate()
+    setProperty('camZoomingMult', 0)
+
+    makeLuaSprite('purpleOverlay')
+    makeGraphic('purpleOverlay', screenWidth, screenHeight, '800080')
+    setProperty('purpleOverlay.alpha', 0)
+    scaleObject('purpleOverlay', 1.5, 1.5, false)
+    setScrollFactor('purpleOverlay', 0, 0)
+end
+
+function onCreatePost()
+    addLuaSprite('purpleOverlay', true)
+    startTween('purpie', 'purpleOverlay', {alpha = 0.33}, 2.6, {})
+end
 
 function onUpdate(elapsed)
     if curStep == 48 or curStep == 52 or curStep == 54 or curStep == 56 or curStep == 912 or curStep == 916 or curStep == 918 or curStep == 920 then
@@ -68,6 +81,35 @@ function onBeatHit()
 	for i=0,7 do
 	    local note = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
 	    setProperty((i > 3 and 'playerStrums' or 'opponentStrums')..'.members['..(i%4)..'].x', _G[note..'X'..(i%4)] + 25 * math.sin((currentBeat + i*50) * math.pi))
+	end
+    end
+end
+
+function onStepHit()
+    if curStep == 1390 then
+	playAnim('gf', 'pull', true)
+	setProperty('gf.specialAnim', true)
+	setObjectOrder('gf', getObjectOrder('phands')+1)
+	setProperty('phands.visible', false)
+	setProperty('gf.idleSuffix', '-alt')
+    end
+
+    if curStep == 1380 then
+	startTween('noMorePurp', 'purpleOverlay', {alpha = 0}, 1, {})
+    end
+end
+
+function opponentNoteHit(id, noteData, noteType, isSustainNote)
+    if noteType == 'Hey!' then
+	setProperty('gf.holdTimer', 0)
+	playAnim('gf', getProperty('singAnimations')[noteData+1]..'-alt', true)
+    end
+end
+
+function onSpawnNote()
+    for i = 0,3 do
+	if getPropertyFromGroup('notes', i, 'noteType') == 'Hey!' then
+	    setPropertyFromGroup('notes', i, 'noAnimation', true)
 	end
     end
 end
