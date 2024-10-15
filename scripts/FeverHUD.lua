@@ -20,6 +20,10 @@ local wifeConditions = {
 local wife = ''
 
 luaDebugMode = true
+function onCreate()
+    setProperty('healthGain', 0)
+end
+
 function onCreatePost()
     setProperty('comboGroup.visible', false)
 
@@ -51,11 +55,14 @@ function onUpdate(elapsed)
 end
 
 function onUpdatePost()
-    if getHealth() > 1.6 then
-	setProperty('iconP1.animation.curAnim.curFrame', 2)
-    elseif getHealth() < 0.4 then
-	setProperty('iconP2.animation.curAnim.curFrame', 2)
+    if dadName ~= 'taki' then
+	if getHealth() > 1.6 then
+	    setProperty('iconP1.animation.curAnim.curFrame', 2)
+	elseif getHealth() < 0.4 then
+	    setProperty('iconP2.animation.curAnim.curFrame', 2)
+	end
     end
+
     setTextSize('scoreTxt', 18)
 
     for _, ratin in ipairs(wifeConditions) do
@@ -82,12 +89,29 @@ function onUpdatePost()
 	ranking = ''
     end
 
-    setTextString('scoreTxt', 'Score: '..score..' | Misses: '..misses..' | Accuracy: '..math.floor(getProperty('ratingPercent') * 10000) * 0.01 .. '% • '..ranking..' '..wife)
+    if songName == 'Bad-Nun' and getVar('translate') then
+	setTextString('scoreTxt', 'スコア: '..score..' | 見逃した: '..misses..' | 正確さ: '..math.floor(getProperty('ratingPercent') * 10000) * 0.01 .. '% • '..ranking..' '..wife)
+    else
+	setTextString('scoreTxt', 'Score: '..score..' | Misses: '..misses..' | Accuracy: '..math.floor(getProperty('ratingPercent') * 10000) * 0.01 .. '% • '..ranking..' '..wife)
+    end
 end
 
 function goodNoteHit(id, noteData, noteType, isSustainNote)
+    local rating_name = getPropertyFromGroup('notes', id, 'rating')
+
+    if rating_name == 'shit' then
+	setProperty('health', getProperty('health') - 0.2)
+	misses = misses + 1
+    elseif rating_name == 'bad' then
+	setProperty('health', getProperty('health') - 0.06)
+    elseif rating_name == 'good' then
+	setProperty('health', getProperty('health') + 0.02)
+    elseif rating_name == 'sick' then
+	setProperty('health', getProperty('health') + 0.04)
+    end
+
     if not isSustainNote then
-	setVar('ratin', getPropertyFromGroup('notes', id, 'rating'))
+	setVar('ratin', rating_name)
 	popUpScore()
     end
 end

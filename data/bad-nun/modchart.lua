@@ -19,6 +19,12 @@ function onCreatePost()
     ogGF = {getProperty('gf.x'), getProperty('gf.y')}
     ogBG = {getProperty('church.x'), getProperty('church.y')}
 
+    runHaxeCode([[
+	var trail = new flixel.addons.effects.FlxTrail(game.dad, null, 4, 24, 0.3, 0.069);
+	trail.color = 0x0;
+	setVar('trail', trail);
+    ]])
+
     makeLuaSprite('darken')
     makeGraphic('darken', screenWidth, screenHeight, '000000')
     setScrollFactor('darken', 0, 0)
@@ -266,9 +272,9 @@ function onUpdate(elapsed)
 	setProperty('playerStrums.members['..i..'].visible', strumLine2Visible)
     end
 
-    if curBeat >= 96 or curBeat >= 344 or curBeat >= 352 then
+    if curBeat >= 96 and curBeat < 224 or curBeat >= 344 and curBeat < 348 or curBeat >= 352 and curBeat < 448 then
 	setProperty('camZooming', false)
-    elseif curBeat >= 224 or curBeat >= 348 or curBeat >= 448 then
+    elseif curBeat >= 224 and curBeat < 344 or curBeat >= 348 and curBeat < 352 or curBeat >= 448 then
 	setProperty('camZooming', true)
     end
 end
@@ -316,7 +322,7 @@ function onBeatHit()
 	    startTween('boyfi', 'boyfriend', {x = getProperty('boyfriend.x') - 100}, 0.15, {ease = 'smoothStepInOut'})
 
 	    setProperty('isCameraOnForcedPos', true)
-	    setProperty('camFollow.x', getVar('gfCamX') - 55) setVar('camFollow.y', getVar('gfCamY') - 130)
+	    setProperty('camFollow.x', getVar('gfCamX') - 55) setVar('camFollow.y', getVar('gfCamY'))
 	end
 
 	runHaxeCode("game.getLuaObject('church').setColorTransform(0,0,0,1,255,255,255);")
@@ -360,7 +366,7 @@ function onBeatHit()
 
     if curBeat == 190 then
 	setProperty('camZooming', false)
-	setProperty('camFollow.x', getProperty('camFollow.x') - 50)
+	callMethod('camFollow.setPosition', {getProperty('camFollow.x') - 50, getVar('gfCamY') + 245})
 	startTween('oooh', 'camGame', {zoom = 6.3}, 0.465, {})
     end
 
@@ -375,8 +381,7 @@ function onBeatHit()
 	setProperty('dad.x', getProperty('dad.x') + 850)
 	setProperty('boyfriend.x', getProperty('boyfriend.x') - 1060)
 
-	callMethod('camFollow.setPosition', {getVar('dadCamX') + 40, getVar('dadCamY') - 200})
-	runHaxeCode("FlxG.camera.focusOn(new FlxBasePoint(camFollow.x, camFollow.y));")
+	focusCamera(getVar('dadCamX') + 40, getVar('dadCamY') - 200)
 	startTween('coolpart', 'camGame', {zoom = 0.8}, 1.15, {})
     end
 
@@ -401,15 +406,16 @@ function onBeatHit()
 	else
 	    setProperty('dad.alpha', 1)
 	    setProperty('boyfriend.alpha', 1)
-	    resetPos()
 	end
 
 	setProperty('purpleOverlay.visible', true)
 	setProperty('purpleOverlay.alpha', 0.33)
-	setProperty('defaultCamZoom', 0.5)
+	setProperty('defaultCamZoom', 0.5) setProperty('camGame.zoom', 0.5)
 	setProperty('gf.visible', true)
 	setProperty('dad.visible', true)
 	setProperty('boyfriend.visible', true)
+
+	runHaxeCode("FlxG.camera.focusOn(new FlxBasePoint(getVar('gfCamX') - 55, getVar('gfCamY') - 130));")
 
 	for _, i in pairs({'dad', 'gf', 'boyfriend'}) do
 	    callMethod(i..'.setColorTransform', {0,0,0,1,0,0,0})
@@ -418,6 +424,132 @@ function onBeatHit()
 	runHaxeCode("game.getLuaObject('church').setColorTransform(0,0,0,0,0,0,0);")
 	setProperty('church.color', 0xFFFFFF)
 	doTweenAlpha('churchTween', 'church', 1, crochet / 1000)
+    end
+
+    if curBeat == 289 then
+	startTween('darkie', 'darken', {alpha = 1}, 9, {onComplete = 'focusthecam'})
+	function focusthecam()
+	    setProperty('camGame.alpha', 0.001)
+	    focusCamera(getVar('dadCamX') + 40, getVar('dadCamY') - 50)
+	end
+	doTweenAlpha('coiso', 'purpleOverlay', 0, 8)
+    end
+
+    if curBeat == 320 then
+	removeLuaSprite('darken')
+	doTweenAlpha('getBackCam', 'camGame', 1, 0.09)
+	cameraShake('camGame', 0.0115, 0.9)
+	if getHealth() > 1.1 then
+	    startTween('healthie', 'game', {health = 1}, 0.9, {}) end
+	setProperty('camGame.zoom', 0.7)
+
+	setProperty('church.color', 0x0)
+	for _, i in pairs({'dad', 'gf', 'boyfriend'}) do
+	    callMethod(i..'.setColorTransform', {0,0,0,1,255,255,255})
+	end
+    end
+
+    if curBeat == 344 then
+	startTween('zoomagain', 'camGame', {zoom = getProperty('camGame.zoom') + 0.1}, 2, {})
+    end
+
+    if curBeat == 348 then
+	setVar('translate', true)
+
+	for _, i in pairs({'dad', 'gf', 'boyfriend'}) do
+	    callMethod(i..'.setColorTransform', {0,0,0,1,0,0,0})
+	    setProperty(i..'.color', 0x0)
+	    setProperty(i..'.visible', false)
+	end
+	runHaxeCode("game.getLuaObject('church').setColorTransform(0,0,0,1,255,255,255);")
+
+	if getHealth() > 1 then
+	    setProperty('health', 1) end
+    end
+
+    if curBeat == 352 then
+	runHaxeCode("addBehindDad(getVar('trail'));")
+	setProperty('dad.visible', true)
+	setProperty('dad.x', getProperty('dad.x') + 500)
+	focusCamera(getProperty('dad.x') + 120, getProperty('dad.y') + 90)
+
+	setProperty('isCameraOnForcedPos', true)
+	setProperty('camGame.zoom', 1)
+	startTween('cooleffect', 'camFollow', {x = getProperty('dad.x') + 120 + getProperty('dad.width'), y = getProperty('dad.y') + 90 + (getProperty('dad.height') / 4)}, 9.5, {})
+    end
+
+    if curBeat == 368 then
+	cancelTween('cooleffect')
+	runHaxeCode("getVar('trail').destroy();")
+	setProperty('dad.x', getProperty('dad.x') - 500)
+	setProperty('dad.visible', false)
+	setProperty('boyfriend.visible', true)
+	setProperty('boyfriend.x', getProperty('boyfriend.x') + 500)
+	focusCamera(getProperty('boyfriend.x') + 120, getProperty('boyfriend.y') + 150)
+	startTween('cooleffect', 'camFollow',
+	    {x = getProperty('boyfriend.x') + getProperty('boyfriend.width') - 220, y = getProperty('boyfriend.y') + 90 + (getProperty('boyfriend.height') / 4)}, 9.5, {})
+    end
+
+    if curBeat == 384 then
+	cancelTween('cooleffect')
+	setProperty('camGame.zoom', 1.1)
+	focusCamera(getProperty('dad.x') + 350, getProperty('dad.y') + 120)
+	setProperty('dad.visible', true)
+	setProperty('boyfriend.visible', false)
+	setProperty('boyfriend.x', getProperty('boyfriend.x') - 500)
+
+	makeLuaSprite('m1') makeGraphic('m1', screenWidth, 145, '000000')
+	setScrollFactor('m1', 0, 0)
+	addLuaSprite('m1')
+
+	makeLuaSprite('m2') makeGraphic('m2', screenWidth, 145, '000000')
+	setProperty('m2.y', screenHeight)
+	setScrollFactor('m2', 0, 0)
+	addLuaSprite('m2')
+
+	setProperty('m1.y', getProperty('m1.y') - 145)
+	--setProperty('m2.y', getProperty('m2.y') + 145)
+	doTweenY('movie1', 'm1', getProperty('m1.y') + 145, 0.35)
+	doTweenY('movi2', 'm2', getProperty('m2.y') - 145, 0.35)
+
+	callMethod('dad.setPosition', {491.5, 60})
+	startTween('movedad', 'dad', {x = getProperty('dad.x') - 200}, 7, {})
+    end
+
+    if curBeat == 400 then
+	runHaxeCode("FlxTween.cancelTweensOf(game.dad);")
+	setProperty('dad.visible', false)
+	setProperty('dad.x', getProperty('dad.x') - 140)
+	setProperty('boyfriend.visible', true)
+
+	focusCamera(getProperty('boyfriend.x') + 350, getProperty('boyfriend.y') + 120)
+	startTween('boyx', 'boyfriend', {x = getProperty('boyfriend.x') - 135}, 7.5, {})
+    end
+
+    if curBeat == 416 then
+	setProperty('dad.alpha', 0.45)
+	setProperty('dad.visible', true)
+	callMethod('dad.setPosition', {2104.61, 898})
+    end
+
+    if curBeat == 432 then
+	setProperty('dad.visible', false)
+    end
+
+    if curBeat == 446 then
+	doTweenAlpha('bzl', 'church', 0, 0.4)
+	startTween('boytwn', 'boyfriend', {alpha = 0}, 0.4, {onComplete = 'resetScore'})
+	function resetScore()
+	    setVar('translate', false)
+	end
+	removeLuaSprite('m1') removeLuaSprite('m2')
+    end
+end
+
+function onStepHit()
+    if curStep >= 352 and curStep < 367 or curStep >= 1376 and curStep < 1391 or curStep >= 1888 and curStep < 1903 then
+	setCamZoom(0.51)
+	setHudZoom(1.01)
     end
 end
 
@@ -428,11 +560,9 @@ function resetPos()
     setProperty('church.x', ogBG[1]) setProperty('church.y', ogBG[2])
 end
 
-function onStepHit()
-    if curStep >= 352 and curStep < 367 or curStep >= 1376 and curStep < 1391 or curStep >= 1888 and curStep < 1903 then
-	setCamZoom(0.51)
-	setHudZoom(1.01)
-    end
+function focusCamera(x, y)
+    callMethod('camFollow.setPosition', {x, y})
+    runHaxeCode("FlxG.camera.focusOn(new FlxBasePoint(camFollow.x, camFollow.y));")
 end
 
 function setCamZoom(zoomAmount)
