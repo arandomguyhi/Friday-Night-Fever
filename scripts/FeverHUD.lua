@@ -21,6 +21,10 @@ local wife = ''
 
 luaDebugMode = true
 function onCreate()
+    precacheImage('combo/numbers')
+    precacheImage('combo/ratings')
+    precacheImage('noteSplashes/noteSplashes')
+
     setProperty('healthGain', 0)
 end
 
@@ -30,6 +34,10 @@ function onCreatePost()
     setProperty('timeBar.visible', false)
     setProperty('timeTxt.visible', false)
     setTextFont('scoreTxt', 'vcr.ttf')
+
+    for i = 0, 7 do
+	    setPropertyFromGroup('strumLineNotes', i, 'rgbShader.enabled', false)
+    end
 
     loadGraphic('iconP1', 'icons/icon-'..getProperty('boyfriend.healthIcon'), 150, 150)
     addAnimation('iconP1', 'idle', {0, 1, 2}, 0, false)
@@ -52,6 +60,14 @@ function onUpdate(elapsed)
     gfCamY = runHaxeCode("return gf.getMidpoint().y + gf.cameraPosition[1] + girlfriendCameraOffset[1];")
 
     setVar('dadCamX', dadCamX) setVar('dadCamY', dadCamY) setVar('bfCamX', bfCamX) setVar('bfCamY', bfCamY) setVar('gfCamX', gfCamX) setVar('gfCamY', gfCamY)
+
+    setProperty('isCameraOnForcedPos', true)
+    setProperty('camFollow.x', getVar(mustHitSection and 'bfCamX' or 'dadCamX'))
+    setProperty('camFollow.y', getVar(mustHitSection and 'bfCamY' or 'dadCamY'))
+    setProperty('camGame.scroll.x', getProperty('camFollow.x') - (screenWidth/2))
+    setProperty('camGame.scroll.y', getProperty('camFollow.y') - (screenHeight/2))
+
+    if curSection == 1 then setProperty('isCameraOnForcedPos', false) end
 end
 
 function onUpdatePost()
@@ -90,7 +106,8 @@ function onUpdatePost()
     end
 
     if songName == 'Bad-Nun' and getVar('translate') then
-	setTextString('scoreTxt', 'スコア: '..score..' | 見逃した: '..misses..' | 正確さ: '..math.floor(getProperty('ratingPercent') * 10000) * 0.01 .. '% • '..ranking..' '..wife)
+	setProperty('scoreTxt.text', 'スコア: '..score..' | 見逃した: '..misses..' | 正確さ: '..math.floor(getProperty('ratingPercent') * 10000) * 0.01 .. '% • '..ranking..' '..wife)
+	setTextFont('scoreTxt', 'vcr.ttf')
     else
 	setTextString('scoreTxt', 'Score: '..score..' | Misses: '..misses..' | Accuracy: '..math.floor(getProperty('ratingPercent') * 10000) * 0.01 .. '% • '..ranking..' '..wife)
     end
@@ -114,6 +131,11 @@ function goodNoteHit(id, noteData, noteType, isSustainNote)
 	setVar('ratin', rating_name)
 	popUpScore()
     end
+end
+
+function onSpawnNote(i)
+    setPropertyFromGroup('notes', i, 'rgbShader.enabled', false)
+    setPropertyFromGroup('notes', i, 'noteSplashData.useRGBShader', false)
 end
 
 local cb = 1

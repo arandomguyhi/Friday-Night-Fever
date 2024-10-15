@@ -66,9 +66,9 @@
 	"healthicon": "taki",
 	"flip_x": false,
 	"healthbar_colors": [
-		161,
-		161,
-		161
+		211,
+		68,
+		112
 	],
 	"camera_position": [
 		155,

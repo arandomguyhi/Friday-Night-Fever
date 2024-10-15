@@ -269,7 +269,9 @@ function onUpdate(elapsed)
 
     for i = 0, 3 do
 	setProperty('strumLineNotes.members['..i..'].visible', strumLine1Visible)
+	setProperty('strumLineNotes.members['..i..'].alpha', strumLine1Visible and 1 or 0.001)
 	setProperty('playerStrums.members['..i..'].visible', strumLine2Visible)
+	setProperty('playerStrums.members['..i..'].alpha', strumLine2Visible and 1 or 0.001)
     end
 
     if curBeat >= 96 and curBeat < 224 or curBeat >= 344 and curBeat < 348 or curBeat >= 352 and curBeat < 448 then
@@ -322,7 +324,7 @@ function onBeatHit()
 	    startTween('boyfi', 'boyfriend', {x = getProperty('boyfriend.x') - 100}, 0.15, {ease = 'smoothStepInOut'})
 
 	    setProperty('isCameraOnForcedPos', true)
-	    setProperty('camFollow.x', getVar('gfCamX') - 55) setVar('camFollow.y', getVar('gfCamY'))
+	    setProperty('camFollow.x', getVar('gfCamX') - 55) setProperty('camFollow.y', getVar('gfCamY') - 15)
 	end
 
 	runHaxeCode("game.getLuaObject('church').setColorTransform(0,0,0,1,255,255,255);")
@@ -345,7 +347,7 @@ function onBeatHit()
     if curBeat == 160 then
 	cancelTween('byedad') setProperty('dad.alpha', 1)
 	setProperty('gf.visible', false)
-	callMethod('camFollow.setPosition', {getVar('dadCamX') + 120, getVar('dadCamY') - 50})
+	callMethod('camFollow.setPosition', {getVar('dadCamX') - 240, getVar('dadCamY') - 50})
 	startTween('zoomagain', 'camGame', {zoom = getProperty('camGame.zoom') + 0.2}, 6, {})
     end
 
@@ -356,8 +358,8 @@ function onBeatHit()
 	    callMethod(i..'.setColorTransform', {0,0,0,1,0,0,0})
 	    setProperty(i..'.color', 0x0)
 	end
-	setProperty('boyfriend.alpha', 1) setProperty('boyfriend.visible', true)
-	setProperty('gf.alpha', 1) setProperty('gf.visible', true)
+	setProperty('boyfriend.visible', true)
+	setProperty('gf.visible', true)
 	setProperty('dad.visible', false)
 	setProperty('defaultCamZoom', 0.85)
 	setProperty('gf.y', getProperty('gf.y') + 130)
@@ -366,7 +368,7 @@ function onBeatHit()
 
     if curBeat == 190 then
 	setProperty('camZooming', false)
-	callMethod('camFollow.setPosition', {getProperty('camFollow.x') - 50, getVar('gfCamY') + 245})
+	callMethod('camFollow.setPosition', {getVar('gfCamX') - 50, getVar('gfCamY') + 245})
 	startTween('oooh', 'camGame', {zoom = 6.3}, 0.465, {})
     end
 
@@ -381,7 +383,7 @@ function onBeatHit()
 	setProperty('dad.x', getProperty('dad.x') + 850)
 	setProperty('boyfriend.x', getProperty('boyfriend.x') - 1060)
 
-	focusCamera(getVar('dadCamX') + 40, getVar('dadCamY') - 200)
+	focusCamera(getVar('dadCamX') + 540, getVar('dadCamY') - 200)
 	startTween('coolpart', 'camGame', {zoom = 0.8}, 1.15, {})
     end
 
