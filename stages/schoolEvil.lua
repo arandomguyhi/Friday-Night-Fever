@@ -25,6 +25,7 @@ end
 function opponentNoteHit(id, noteData, noteType, isSustainNote)
     setProperty('meat.holdTimer', 0)
     playAnim('meat', getProperty('singAnimations')[noteData+1], true)
+    setProperty('health', getProperty('health') - (difficultyName:lower() == 'hard' and 0.02 or 0.01))
 end
 
 function onBeatHit()

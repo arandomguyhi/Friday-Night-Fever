@@ -27,7 +27,7 @@ local FREEPLAY_SONGS = {
     {
 	image = 'week2',
 	songs = {
-	    {'Start Baby', 'spooky'},
+	    {'Star Baby', 'spooky'},
 	    {'Last Meow', 'feralspooky'},
 	    {'Bazinga', 'taki'},
 	    {'Crucify', 'taki'}
