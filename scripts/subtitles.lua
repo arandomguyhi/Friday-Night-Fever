@@ -1,4 +1,4 @@
-addHaxeLibrary('TJSON', 'tjson')
+if not checkFileExists('data/'..songPath..'/subtitles.json') then return end
 
 luaDebugMode = true
 function onCreatePost()
