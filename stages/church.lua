@@ -7,8 +7,8 @@ function onCreate()
 end
 
 function onCreatePost()
-    setProperty('boyfriend.x', 1828)
-    setProperty('boyfriend.y', 1148)
+    --setProperty('boyfriend.x', 1828) setProperty('boyfriendGroup.x', 1828)
+    --setProperty('boyfriend.y', 1148) setProperty('boyfriendGroup.y', 1148)
 
     setProperty('gf.x', 948)
     setProperty('gf.y', 722)

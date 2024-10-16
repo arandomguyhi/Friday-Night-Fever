@@ -379,7 +379,7 @@ function onPause() return Function_Stop end
 
 function onCustomSubstateCreate(name)
     if name == 'Main Menu' then
-	--hi?
+	-- bomdia
     end
 
     if name == 'Freeplay State' then
@@ -390,6 +390,10 @@ function onCustomSubstateCreate(name)
 	allowInput = true
 	selectingFrenzy = false
 	changeSelection(true)
+
+	if buildTarget ~= 'windows' then
+	    addTouchPad('LEFT_RIGHT', 'A_B')
+	end
     end
 
     if name == 'Freeplay Menu' then
@@ -572,12 +576,12 @@ function onCustomSubstateUpdate(name, elapsed)
     if name == 'Freeplay State' then
 	if not allowInput then return end
 
-	if keyJustPressed('left') or keyJustPressed('right') then
+	if (keyJustPressed('left') or touchPadJustPressed('LEFT')) or (keyJustPressed('right') or touchPadJustPressed('RIGHT')) then
 	    changeSelection()
 	    waitTimer = 0
 	end
 
-	if getProperty('controls.ACCEPT') then
+	if (getProperty('controls.ACCEPT') or touchPadJustPressed('A')) then
 	    allowInput = false
 	    waitTimer = 0
 	    setDataFromSave('FreeplayMenu', 'isFrenzy', selectingFrenzy)

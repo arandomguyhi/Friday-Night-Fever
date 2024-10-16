@@ -60,14 +60,6 @@ function onUpdate(elapsed)
     gfCamY = runHaxeCode("return gf.getMidpoint().y + gf.cameraPosition[1] + girlfriendCameraOffset[1];")
 
     setVar('dadCamX', dadCamX) setVar('dadCamY', dadCamY) setVar('bfCamX', bfCamX) setVar('bfCamY', bfCamY) setVar('gfCamX', gfCamX) setVar('gfCamY', gfCamY)
-
-    setProperty('isCameraOnForcedPos', true)
-    setProperty('camFollow.x', getVar(mustHitSection and 'bfCamX' or 'dadCamX'))
-    setProperty('camFollow.y', getVar(mustHitSection and 'bfCamY' or 'dadCamY'))
-    setProperty('camGame.scroll.x', getProperty('camFollow.x') - (screenWidth/2))
-    setProperty('camGame.scroll.y', getProperty('camFollow.y') - (screenHeight/2))
-
-    if curSection == 1 then setProperty('isCameraOnForcedPos', false) end
 end
 
 function onUpdatePost()
