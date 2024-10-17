@@ -1,6 +1,17 @@
 local intensity = 15 -- maybe ill do a setVar instead later
 local animIndex = {{-1, 0}, {0, 1}, {0, -1}, {1, 0}}
 
+function onCreatePost()
+    runHaxeCode([[
+	createGlobalCallback('snapCamera', function(xpos:Float, ypos:Float, isForced:Bool) {
+	    game.camGame.scroll.x = xpos - (FlxG.width / 2);
+	    game.camGame.scroll.y = ypos - (FlxG.height / 2);
+	    game.camFollow.setPosition(xpos, ypos);
+	    game.isCameraOnForcedPos = isForced;
+	});
+    ]])
+end
+
 setVar('useDirectionalCamera', false)
 function onUpdate()
     dadCamX = runHaxeCode("return dad.getMidpoint().x + 150 + dad.cameraPosition[0] + opponentCameraOffset[0];") -- doing with rhc cuz im lazy
