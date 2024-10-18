@@ -142,7 +142,7 @@ function popUpScore()
     addLuaSprite('comboRating'..cb)
 
     -- COMBO NUM SHIT
-    if combo >= 10 or combo == 0 then
+    if combo >= 10 or combo == 0 and not botPlay then
 	local index = 0
 	local seperatedScore = stringSplit(combo, '')
 
