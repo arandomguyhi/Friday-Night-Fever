@@ -34,10 +34,10 @@ function onStepHit()
 
 	if array[1].endStep == curStep then
 	    if array[2] == nil or curStep + 6 < array[2].startStep then
-		for _, i in pairs({'text', 'textBG'}) do
+		for _, i in ipairs({'text', 'textBG'}) do
 		    startTween('endsteptween'.._, i, {alpha = 0}, 0.32, {type = 'oneshot'}) end
-		table.remove(array, 1)
 	    end
+	    table.remove(array, 1)
 	end
     end
 end

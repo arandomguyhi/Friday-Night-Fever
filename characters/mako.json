@@ -1,0 +1,80 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "mako idle",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				8,
+				1
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "mako right",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				11,
+				-17
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "mako down",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				77,
+				72
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "mako left",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				18,
+				24
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "mako up",
+			"indices": []
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/mako/Mako",
+	"position": [
+		25,
+		445
+	],
+	"healthicon": "mako",
+	"flip_x": false,
+	"healthbar_colors": [
+		71,
+		204,
+		64
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": false
+}
