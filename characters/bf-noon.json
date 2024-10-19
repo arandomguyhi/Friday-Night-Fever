@@ -1,0 +1,157 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				6,
+				93
+			],
+			"anim": "idle-frown",
+			"fps": 24,
+			"name": "fever idle frown",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				8,
+				16
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "fever down0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-22,
+				93
+			],
+			"anim": "singRIGHTmiss",
+			"fps": 24,
+			"name": "fever right miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-27,
+				83
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "fever up0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				40,
+				91
+			],
+			"anim": "singLEFTmiss",
+			"fps": 24,
+			"name": "fever left miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-3,
+				93
+			],
+			"anim": "hey",
+			"fps": 24,
+			"name": "fever hey",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				6,
+				93
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "fever idle0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-19,
+				92
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "fever right0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				11,
+				18
+			],
+			"anim": "singDOWNmiss",
+			"fps": 24,
+			"name": "fever down miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-19,
+				82
+			],
+			"anim": "singUPmiss",
+			"fps": 24,
+			"name": "fever up miss",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				40,
+				91
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "fever left0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				21,
+				92
+			],
+			"anim": "dodge",
+			"fps": 24,
+			"name": "fever dodge",
+			"indices": []
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/fever/fever_week4",
+	"position": [
+		0,
+		350
+	],
+	"healthicon": "bf",
+	"flip_x": true,
+	"healthbar_colors": [
+		195,
+		83,
+		227
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": true
+}

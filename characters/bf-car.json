@@ -1,0 +1,146 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				21,
+				92
+			],
+			"anim": "dodge",
+			"fps": 24,
+			"name": "fever dodge",
+			"indices": []
+		},
+		{
+			"offsets": [
+				12,
+				53
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "fever down0"
+		},
+		{
+			"offsets": [
+				-40,
+				91
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHTmiss",
+			"loop": false,
+			"name": "fever right MISS"
+		},
+		{
+			"offsets": [
+				40,
+				93
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFTmiss",
+			"loop": false,
+			"name": "fever left miss"
+		},
+		{
+			"offsets": [
+				-5,
+				106
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "fever up0"
+		},
+		{
+			"offsets": [
+				23,
+				96
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "hey",
+			"loop": false,
+			"name": "fever HEY"
+		},
+		{
+			"offsets": [
+				6,
+				93
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "fever idle0"
+		},
+		{
+			"offsets": [
+				11,
+				46
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWNmiss",
+			"loop": false,
+			"name": "fever down MISS"
+		},
+		{
+			"offsets": [
+				-19,
+				92
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "fever right0"
+		},
+		{
+			"offsets": [
+				-6,
+				104
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUPmiss",
+			"loop": false,
+			"name": "fever up miss"
+		},
+		{
+			"offsets": [
+				36,
+				93
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "fever left0"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/fever/car",
+	"position": [
+		0,
+		350
+	],
+	"healthicon": "bf",
+	"flip_x": true,
+	"healthbar_colors": [
+		195,
+		83,
+		227
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": true
+}

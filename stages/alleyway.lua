@@ -105,8 +105,9 @@ function onStepHit()
 end
 
 function opponentNoteHit(id, noteData, noteType, isSustainNote)
-    if songName:lower() == 'princess' and (curBeat == 309 or curBeat == 367) and noteData == 2 then
-	setProperty('dad.holdTimer', 0)
-	playAnim('dad', 'singLaugh', true)
+    if songName:lower() == 'princess' and noteData == 2 then
+	if curBeat == 309 or curBeat == 367 then
+	    setProperty('dad.holdTimer', 0)
+	    playAnim('dad', 'singLaugh', true) end
     end
 end

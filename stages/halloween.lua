@@ -12,7 +12,7 @@ end
 
 function onCreatePost()
     if songName:lower() == 'star-baby' then
-	scaleObject('dad', 0.78, 0.78, false) end
+	scaleObject('dad', 0.77, 0.77, false) end
     setScrollFactor('gf', 1, 1)
 end
 

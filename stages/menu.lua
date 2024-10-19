@@ -43,7 +43,7 @@ local FREEPLAY_SONGS = {
     },
     {
 	image = 'week4',
-	songs = {{'Honey', 'hunni'}, {'Bunni', 'hunni'}, {'Thorow It Back', 'hunni'}}
+	songs = {{'Honey', 'hunni'}, {'Bunnii', 'hunni'}, {'Throw It Back', 'hunni'}}
     },
     {
 	image = 'week5',

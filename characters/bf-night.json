@@ -1,0 +1,168 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-3,
+				92
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "scared",
+			"loop": true,
+			"name": "fever fear"
+		},
+		{
+			"offsets": [
+				-9,
+				91
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHTmiss",
+			"loop": false,
+			"name": "fever right miss"
+		},
+		{
+			"offsets": [
+				40,
+				15
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "fever down0"
+		},
+		{
+			"offsets": [
+				7,
+				93
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle-frown",
+			"loop": false,
+			"name": "fever idle frown"
+		},
+		{
+			"offsets": [
+				40,
+				93
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFTmiss",
+			"loop": false,
+			"name": "fever left miss"
+		},
+		{
+			"offsets": [
+				-35,
+				96
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "fever up0"
+		},
+		{
+			"offsets": [
+				0,
+				89
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "hey",
+			"loop": false,
+			"name": "fever hey"
+		},
+		{
+			"offsets": [
+				7,
+				93
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "fever idle0"
+		},
+		{
+			"offsets": [
+				45,
+				14
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWNmiss",
+			"loop": false,
+			"name": "fever down miss"
+		},
+		{
+			"offsets": [
+				-6,
+				89
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "fever right0"
+		},
+		{
+			"offsets": [
+				43,
+				95
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "fever left0"
+		},
+		{
+			"offsets": [
+				-14,
+				103
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUPmiss",
+			"loop": false,
+			"name": "fever up miss"
+		},
+		{
+			"offsets": [
+				21,
+				92
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "dodge",
+			"loop": false,
+			"name": "fever dodge"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/fever/demon_fever_assets_week4",
+	"position": [
+		0,
+		350
+	],
+	"healthicon": "bf-demon",
+	"flip_x": true,
+	"healthbar_colors": [
+		195,
+		83,
+		227
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": true
+}
