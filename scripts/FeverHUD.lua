@@ -35,19 +35,11 @@ function onCreatePost()
     setProperty('timeTxt.visible', false)
     setTextFont('scoreTxt', 'vcr.ttf')
 
-    for i = 0, 7 do
-	    setPropertyFromGroup('strumLineNotes', i, 'rgbShader.enabled', false)
+    for i = 0, getProperty('strumLineNotes.length')-1 do
+	setPropertyFromGroup('strumLineNotes', i, 'rgbShader.enabled', false)
     end
 
-    loadGraphic('iconP1', 'icons/icon-'..getProperty('boyfriend.healthIcon'), 150, 150)
-    addAnimation('iconP1', 'idle', {0, 1, 2}, 0, false)
-    setProperty('iconP1.flipX', true)
-
-    loadGraphic('iconP2', 'icons/icon-'..getProperty('dad.healthIcon'), 150, 150)
-    addAnimation('iconP2', 'idle', {0, 1, 2}, 0, false)
-
-    setProperty('iconP1.iconOffsets[0]', getProperty('iconP1.iconOffsets[0]') - 45)
-    setProperty('iconP2.iconOffsets[0]', getProperty('iconP2.iconOffsets[0]') - 45)
+    loadIcons()
 end
 
 function onUpdatePost()
@@ -189,4 +181,16 @@ function popUpScore()
     end
 
     cb = cb + 1
+end
+
+function loadIcons()
+    loadGraphic('iconP1', 'icons/icon-'..getProperty('boyfriend.healthIcon'), 150, 150)
+    addAnimation('iconP1', 'idle', {0, 1, 2}, 0, false)
+    setProperty('iconP1.flipX', true)
+
+    loadGraphic('iconP2', 'icons/icon-'..getProperty('dad.healthIcon'), 150, 150)
+    addAnimation('iconP2', 'idle', {0, 1, 2}, 0, false)
+
+    setProperty('iconP1.iconOffsets[0]', getProperty('iconP1.iconOffsets[0]') - 45)
+    setProperty('iconP2.iconOffsets[0]', getProperty('iconP2.iconOffsets[0]') - 45)
 end

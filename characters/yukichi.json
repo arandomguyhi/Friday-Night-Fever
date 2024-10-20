@@ -1,0 +1,80 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "yukichi idle",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-139,
+				-62
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "yukichi down note",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-54,
+				-7
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "yukichi right note",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-27,
+				17
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "yukichi up note",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				47,
+				4
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "yukichi left note",
+			"indices": []
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/yukichi_leader_assets",
+	"position": [
+		-130,
+		240
+	],
+	"healthicon": "yukichi",
+	"flip_x": false,
+	"healthbar_colors": [
+		255,
+		151,
+		240
+	],
+	"camera_position": [
+		150,
+		25
+	],
+	"sing_duration": 4,
+	"scale": 0.8,
+	"_editor_isPlayer": false
+}
