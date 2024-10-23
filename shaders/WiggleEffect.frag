@@ -42,7 +42,7 @@
 			}
 			else if (effectType == EFFECT_TYPE_HEAT_WAVE_HORIZONTAL)
 			{
-				x = sin(pt.x * uFrequency + uTime * uSpeed) * uWaveAmplitude;
+				x = sin(pt.x * uFrequency + 1.0 * pt.y + uTime * uSpeed) * uWaveAmplitude;
 			}
 			else if (effectType == EFFECT_TYPE_HEAT_WAVE_VERTICAL)
 			{
