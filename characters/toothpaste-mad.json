@@ -1,0 +1,91 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "toothpaste mad idle"
+		},
+		{
+			"offsets": [
+				-100,
+				-24
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "toothpaste mad right"
+		},
+		{
+			"offsets": [
+				-296,
+				-318
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "toothpaste mad down"
+		},
+		{
+			"offsets": [
+				-198,
+				50
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "toothpaste mad left"
+		},
+		{
+			"offsets": [
+				-146,
+				229
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "toothpaste mad up"
+		},
+		{
+			"offsets": [
+				-145,
+				-2
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "scream",
+			"loop": false,
+			"name": "toothpaste mad scream"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/paste/pasteMad",
+	"position": [
+		0,
+		0
+	],
+	"healthicon": "toothpaste",
+	"flip_x": false,
+	"healthbar_colors": [
+		80,
+		165,
+		235
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": false
+}
