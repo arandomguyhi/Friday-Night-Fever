@@ -12,7 +12,7 @@ function onCreate()
     setProperty('platform.visible', false)
     addLuaSprite('platform')
 
-    --[[createInstance('tea', 'objects.Character', {0, 0, 'gf-fight'})
+    createInstance('tea', 'objects.Character', {0, 0, 'gf-fight'})
     setProperty('tea.visible', false)
     addLuaSprite('tea')
 
@@ -20,13 +20,43 @@ function onCreate()
     addInstance('pasta')
     setProperty('pasta.visible', false)
 
+    makeAnimatedLuaSprite('feverParry', 'characters/fever/Fever_paste_anims', 570, -10)
+    setProperty('feverParry.antialiasing', true)
+    addAnimationByPrefix('feverParry', 'parry', 'fever parry', 24, false)
+    playAnim('feverParry', 'parry')
+    addLuaSprite('feverParry')
+    setProperty('feverParry.alpha', 0.0000000000000000000009)
+
     makeAnimatedLuaSprite('pasteSlam', 'characters/paste/paste_anims', getProperty('pasta.x') - 200, getProperty('pasta.y') - 165)
     setProperty('pasteSlam.antialiasing', true)
     addAnimationByPrefix('pasteSlam', 'smash', 'toothpaste smash', 24, false)
     addAnimationByPrefix('pasteSlam', 'parry', 'toothpaste parry', 24, false)
     playAnim('pasteSlam', 'smash')
     addLuaSprite('pasteSlam')
-    setProperty('pasteSlam.alpha', 0.0000000000000000000009)]]
+    setProperty('pasteSlam.alpha', 0.0000000000000000000009)
+
+    setHUDVisibility(false)
+
+    if getPropertyFromClass('states.PlayState', 'deathCounter') > 0 then
+	setProperty('skipCountdown', true)
+
+	setPropertyFromClass('flixel.FlxG', 'sound.music.time', 42950)
+	setPropertyFromClass('backend.Conductor', 'songPosition', 42950)
+	setProperty('gf.visible', false)
+	setProperty('boyfriend.x', getProperty('boyfriend.x') - 50)
+
+	setProperty('defaultCamZoom', 0.76)
+	setProperty('blackScreen.visible', true)
+    else
+	for _, i in pairs({'bg', 'fire', 'boyfriend', 'gf'}) do
+	    setProperty(i..'.color', 0x0)
+	    doTweenColor('colortwn'.._, i, 'ffffff', 10)
+	end
+
+	setProperty('camGame.zoom', 1)
+	startTween('startiezoom', 'camGame', {zoom = 0.76}, 15, {onComplete = 'forcezoom'})
+	function forcezoom() setProperty('defaultCamZoom', 0.76) end
+    end
 end
 
 function onUpdate(elapsed)
@@ -125,6 +155,32 @@ function onUpdate(elapsed)
     end
 end
 
+function onMoveCamera(target)
+    isTarget = target == 'dad' and true or false
+end
+
+function onBeatHit()
+    if curBeat == 363 or curBeat == 716 then
+	startTween('healthTween', 'game', {health = 0.1}, 1, {})
+	cameraShake('camGame', 0.005, 1)
+	cameraShake('camHUD', 0.007, 1)
+	playAnim('pasta', 'scream', true)
+    end
+
+    if getProperty('pasta.animation.curAnim.name') ~= 'scream' then
+	if curBeat >= 146 and curBeat % 5 == 0 and getRandomBool(10) then
+	    debugPrint('WORK')
+	    smashMechanic()
+	elseif curStep >= 1472 and curBeat % 5 == 0 and getRandomBool(25) then
+	    debugPrint('WORK')
+	    smashMechanic()
+	end
+    end
+
+    if getProperty('pasta.animation.curAnim.name') == 'idle' then
+	callMethod('pasta.dance', {''}) end
+end
+
 function onStepHit()
     if curStep == 556 then
 	playAnim('dad', 'transition', true)
@@ -135,7 +191,67 @@ function onStepHit()
 	    dad.animation.finishCallback = (a) -> {
 		game.defaultCamZoom = 0.39;
 		game.camZooming = true;
+
+		camGame.flash(0xFFFFFFFF, 0.85);
+		gf.visible = false;
+		dad.visible = false;
+		getVar('pasta').visible = true;
+
+		getVar('tea').visible = true;
+		game.getLuaObject('platform').visible = true;
+
+		boyfriend.setPosition(770, 225);
+		getVar('tea').setPosition(boyfriend.x + 690, boyfriend.y - 500);
+		game.getLuaObject('platform').setPosition(tea.x - 28, tea.y + tea.height - 125);
 	    }
 	]])
+    end
+end
+
+function opponentNoteHit(id, noteData, noteType, isSustainNote)
+    if getProperty('pasta.visible') or getProperty('pasta.alpha') >= 1 then
+	playAnim('pasta', getProperty('singAnimations')[noteData+1], true)
+	setProperty('pasta.holdTimer', 0)
+    end
+end
+
+function setHUDVisibility(theBool)
+    for i = 0, 7 do
+	setProperty('strumLineNotes.members['..i..'].alpha', theBool and 1 or 0.001) end
+
+    for _, i in pairs({'iconP1', 'iconP2', 'healthBar', 'healthBar.bg', 'scoreTxt'}) do
+	setProperty(i..'.visible', theBool) end
+end
+
+function smashMechanic()
+    local swagCounter = 0
+    runTimer('warning', crochet / 1000, 3)
+
+    function onTimerCompleted(tag)
+	if tag == 'warning' then
+	    makeLuaSprite('warning', 'mechanicShit/warning', 768, 164.5)
+	    setObjectCamera('warning', 'camHUD')
+	    addLuaSprite('warning')
+
+	    playSound('alert', 1)
+	    startTween('warninAlpha', 'warning', {alpha = 0}, crochet / 1000, {onComplete = 'destroyWarn'})
+	    function destroyWarn() removeLuaSprite('warning') end
+
+	    swagCounter = swagCounter + 1
+	    debugPrint(swagCounter)
+
+	    if swagCounter == 2 then
+		setVar('canHey', false)
+		playSound('smash', 1)
+
+		setProperty('pasta.alpha', 0.00000000000000000009)
+		setProperty('pasteSlam.alpha', 1)
+		playAnim('pasteSlam', 'smash', true)
+
+		setVar('spacePressed', false)
+		setVar('canPressSpace', true)
+		inMechanic = true
+	    end
+	end
     end
 end
