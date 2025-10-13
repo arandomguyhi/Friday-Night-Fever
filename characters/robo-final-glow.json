@@ -1,0 +1,55 @@
+{
+	"animations": [
+		{
+			"offsets": [0, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "Robo idle dark"
+		},
+		{
+			"offsets": [-39, -259],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "Robo down dark"
+		},
+		{
+			"offsets": [-114, -64],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "Robo right dark"
+		},
+		{
+			"offsets": [163, 52],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "Robo up dark"
+		},
+		{
+			"offsets": [356, 49],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "Robo left dark"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/robo_final_glow",
+	"position": [0, 0],
+	"healthicon": "roboff",
+	"flip_x": false,
+	"healthbar_colors": [80, 75, 166],
+	"camera_position": [0, 0],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": false
+}

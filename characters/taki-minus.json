@@ -1,0 +1,55 @@
+{
+	"animations": [
+		{
+			"offsets": [0, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "mtaki idle"
+		},
+		{
+			"offsets": [311, -172],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "mtaki down"
+		},
+		{
+			"offsets": [-16, -145],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "mtaki right"
+		},
+		{
+			"offsets": [146, -76],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "mtaki up"
+		},
+		{
+			"offsets": [193, -438],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "mtaki left"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/mtaki_assets",
+	"position": [0, 0],
+	"healthicon": "taki",
+	"flip_x": false,
+	"healthbar_colors": [211, 68, 112],
+	"camera_position": [-120, 90],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": false
+}

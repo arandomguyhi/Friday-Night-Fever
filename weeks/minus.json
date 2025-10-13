@@ -1,0 +1,23 @@
+{
+	"songs": [
+		["Grando", "bf", [194, 160, 11]],
+		["Feel the Rage", "bf", [194, 160, 11]]
+	],
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "stage",
+
+	"storyName": "Weird Funny Games",
+	"weekBefore": "",
+	"weekName": "Weird Funny Games",
+	"startUnlocked": true,
+	"difficulties": "Normal, Hard",
+
+	"hideStoryMode": true,
+	"hideFreeplay": false,
+	"weeklogo": "weirdfunnygames"
+}

@@ -1,0 +1,55 @@
+{
+	"animations": [
+		{
+			"offsets": [0, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "Robo fever0"
+		},
+		{
+			"offsets": [3, 2],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "Robo fever down"
+		},
+		{
+			"offsets": [4, -3],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "Robo fever right"
+		},
+		{
+			"offsets": [3, -4],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "Robo fever up"
+		},
+		{
+			"offsets": [-1, 2],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "Robo fever left"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/robo-fever/flying",
+	"position": [0, 0],
+	"healthicon": "roboff",
+	"flip_x": false,
+	"healthbar_colors": [80, 75, 166],
+	"camera_position": [0, 0],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": false
+}

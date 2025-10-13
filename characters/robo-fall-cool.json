@@ -1,0 +1,55 @@
+{
+	"animations": [
+		{
+			"offsets": [0, 22],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "Robo fever cool up"
+		},
+		{
+			"offsets": [-11, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "Robo fever cool right"
+		},
+		{
+			"offsets": [8, -17],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "Robo fever cool down"
+		},
+		{
+			"offsets": [15, 18],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "Robo fever cool left"
+		},
+		{
+			"offsets": [0, 20],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "Robo fever cool up"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/robo_fall_cool",
+	"position": [0, 0],
+	"healthicon": "roboff",
+	"flip_x": false,
+	"healthbar_colors": [80, 165, 235],
+	"camera_position": [0, 0],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": false
+}

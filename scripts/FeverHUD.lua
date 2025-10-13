@@ -19,11 +19,46 @@ local wifeConditions = {
 }
 local wife = ''
 
+forcedCombo = false
+setVar('forceComboPos', {})
+
 luaDebugMode = true
+
+runHaxeCode([[
+    import psychlua.FunkinLua;
+
+    FunkinLua.customFunctions.set('getCamPos', function(char:String) {
+        parentLua.call('getCamPos', [char]);
+    });
+    FunkinLua.customFunctions.set('snapCamera', function(xpos, ypos) {
+        parentLua.call('snap', [xpos,ypos]);
+    });
+]])
+
+function snap(x,y)
+    callMethod('camFollow.setPosition', {x,y})
+    callMethod('camGame.snapToTarget', {''})
+end
+
+function getCamPos(char)
+    local _char = char
+
+    if char == 'gf' then _char = 'girlfriend' end
+    if char == 'dad' then _char = 'opponent' end
+
+    local bro = getProperty(char..'.cameraPosition[0]')
+    return {
+        x = (getMidpointX(char) + (char == 'boyfriend' and -100 or (char == 'dad' and 150 or 0))) + getProperty(char..'.cameraPosition[0]') + getProperty(_char..'CameraOffset[0]'),
+        y = (getMidpointY(char) - ((char == 'boyfriend' or char == 'dad') and 100 or 0)) + getProperty(char..'.cameraPosition[1]') + getProperty(_char..'CameraOffset[1]')
+    }
+end
+
 function onCreate()
     precacheImage('combo/numbers')
     precacheImage('combo/ratings')
     precacheImage('noteSplashes/noteSplashes')
+
+    --setPropertyFromClass('states.PlayState', 'SONG.splashSkin', 'noteSplashes/noteSplashes')
 
     setProperty('healthGain', 0)
 end
@@ -40,6 +75,8 @@ function onCreatePost()
     end
 
     loadIcons()
+    --setProperty('iconP1.iconOffsets[0]', getProperty('iconP1.iconOffsets[0]') - 45)
+    --setProperty('iconP2.iconOffsets[0]', getProperty('iconP2.iconOffsets[0]') - 45)
 end
 
 function onUpdatePost()
@@ -114,6 +151,8 @@ local cb = 1
 function popUpScore()
     local pixel = getPropertyFromClass('states.PlayState', 'isPixelStage')
 
+    forcedCombo = getVar('forceComboPos') ~= nil and (getVar('forceComboPos').x ~= 0 or getVar('forceComboPos').y ~= 0)
+
     -- COMBO RATING SHIT
     makeAnimatedLuaSprite('comboRating'..cb, 'combo/ratings'..(pixel and '-pixel' or ''))
     for _, i in pairs({'sick', 'good', 'bad', 'shit'}) do
@@ -126,12 +165,19 @@ function popUpScore()
     else
 	setGraphicSize('comboRating'..cb, getProperty('comboRating'..cb..'.width') * 0.49, getProperty('comboRating'..cb..'.height') * 0.49)
     end
+    setProperty('comboRating'..cb..'.antialiasing', not pixel)
     setProperty('comboRating'..cb..'.velocity.x', -getRandomInt(0, 10)) setProperty('comboRating'..cb..'.velocity.y', -getRandomInt(140, 175))
     setProperty('comboRating'..cb..'.acceleration.y', 550)
     setProperty('comboRating'..cb..'.x', (screenWidth / 2) - (getProperty('comboRating'..cb..'.width') / 2))
     setProperty('comboRating'..cb..'.y', (screenHeight * 0.5) - (getProperty('comboRating'..cb..'.height') / 2) + 100)
+
+    if forcedCombo then
+        setProperty('comboRating'..cb..'.x', getVar('forceComboPos').x)
+        setProperty('comboRating'..cb..'.y', getVar('forceComboPos').y)
+    end
+
     setObjectCamera('comboRating'..cb, 'hud')
-    addLuaSprite('comboRating'..cb)
+    addLuaSprite('comboRating'..cb, true)
 
     -- COMBO NUM SHIT
     if combo >= 10 or combo == 0 and not botPlay then
@@ -151,13 +197,14 @@ function popUpScore()
 	    else
 		setGraphicSize('numScore'..v, getProperty('numScore'..v..'.width') * 0.5, getProperty('numScore'..v..'.height') * 0.5, false)
 	    end
+	    setProperty('numScore'..v..'.antialiasing', not pixel)
 	    setProperty('numScore'..v..'.acceleration.y', getRandomInt(200, 300))
 	    setProperty('numScore'..v..'.velocity.y', -getRandomInt(140, 160))
 	    setProperty('numScore'..v..'.velocity.x', getRandomFloat(-5, 5))
-	    setProperty('numScore'..v..'.x', getProperty('comboRating'..cb..'.x') + (33 * index) - 8)
-	    setProperty('numScore'..v..'.y', getProperty('comboRating'..cb..'.y') + 100 + (pixel and 30 or 0))
+	    setProperty('numScore'..v..'.x', not forcedCombo and 0 or getProperty('comboRating'..cb..'.x') + (33 * index) - 8)
+	    setProperty('numScore'..v..'.y', not forcedCombo and 0 or getProperty('comboRating'..cb..'.y') + 100 + (pixel and 30 or 0))
 	    setObjectCamera('numScore'..v, 'hud')
-	    addLuaSprite('numScore'..v)
+	    addLuaSprite('numScore'..v, true)
 
 	    setVar('maisquemerda', v) -- morre
 	    startTween('numTween'..v, 'numScore'..v, {alpha = 0}, 0.2, {startDelay = 0.3, onComplete = 'killnum'})
@@ -183,14 +230,14 @@ function popUpScore()
     cb = cb + 1
 end
 
-function loadIcons()
-    loadGraphic('iconP1', 'icons/icon-'..getProperty('boyfriend.healthIcon'), 150, 150)
+function loadIcons(p1, p2)
+    if p1 == nil then p1 = getProperty('boyfriend.healthIcon') end
+    if p2 == nil then p2 = getProperty('dad.healthIcon') end
+
+    loadGraphic('iconP1', 'icons/icon-'..p1, 150, 150)
     addAnimation('iconP1', 'idle', {0, 1, 2}, 0, false)
     setProperty('iconP1.flipX', true)
 
-    loadGraphic('iconP2', 'icons/icon-'..getProperty('dad.healthIcon'), 150, 150)
+    loadGraphic('iconP2', 'icons/icon-'..p2, 150, 150)
     addAnimation('iconP2', 'idle', {0, 1, 2}, 0, false)
-
-    setProperty('iconP1.iconOffsets[0]', getProperty('iconP1.iconOffsets[0]') - 45)
-    setProperty('iconP2.iconOffsets[0]', getProperty('iconP2.iconOffsets[0]') - 45)
 end

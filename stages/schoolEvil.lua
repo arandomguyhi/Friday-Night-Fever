@@ -18,7 +18,13 @@ function onCreatePost()
     setScrollFactor('boyfriend', 0.9, 0.9)
     setScrollFactor('gf', 0.9, 0.9)
 
+    for _, guys in pairs({'dad', 'boyfriend', 'meat', 'gf', 'bg'}) do
+	setProperty(guys..'.antialiasing', false)
+    end
+
     setObjectOrder('meat', getObjectOrder('dadGroup')-1)
+
+    -- never heard of circularMotion before now, that's cool tbh
     callMethodFromClass('flixel.tweens.FlxTween', 'circularMotion', {instanceArg('meat'), 300, 200, 50, 0, true, 4, true, {type = 2}})
 end
 

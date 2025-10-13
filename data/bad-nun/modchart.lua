@@ -268,9 +268,7 @@ function onUpdate(elapsed)
     end
 
     for i = 0, 3 do
-	setProperty('strumLineNotes.members['..i..'].visible', strumLine1Visible)
 	setProperty('strumLineNotes.members['..i..'].alpha', strumLine1Visible and 1 or 0.001)
-	setProperty('playerStrums.members['..i..'].visible', strumLine2Visible)
 	setProperty('playerStrums.members['..i..'].alpha', strumLine2Visible and 1 or 0.001)
     end
 

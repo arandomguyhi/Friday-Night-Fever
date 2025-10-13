@@ -1,0 +1,25 @@
+{
+	"songs": [
+		["Preparation", "toothpaste", [80, 165, 235]],
+		["c354r", "bf", [194, 160, 11]],
+		["loaded", "bf", [194, 160, 11]],
+		["gears", "bf", [194, 160, 11]]
+	],
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "stage",
+
+	"storyName": "Weird Funny Games",
+	"weekBefore": "",
+	"weekName": "Weird Funny Games",
+	"startUnlocked": true,
+	"difficulties": "Normal, Hard",
+
+	"hideStoryMode": true,
+	"hideFreeplay": false,
+	"weeklogo": "weirdfunnygames"
+}

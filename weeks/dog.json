@@ -1,0 +1,25 @@
+{
+	"songs": [
+		["DUI", "bf", [80, 165, 235]],
+		["Cosmic Swing", "bf", [194, 160, 11]],
+		["Cell From Hell", "bf", [194, 160, 11]],
+		["W00F", "bf", [194, 160, 11]]
+	],
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "stage",
+
+	"storyName": "Weird Funny Games",
+	"weekBefore": "",
+	"weekName": "Weird Funny Games",
+	"startUnlocked": true,
+	"difficulties": "Normal, Hard",
+
+	"hideStoryMode": true,
+	"hideFreeplay": false,
+	"weeklogo": "weirdfunnygames"
+}

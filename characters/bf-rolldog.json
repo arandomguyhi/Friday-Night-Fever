@@ -1,0 +1,95 @@
+{
+	"animations": [
+		{
+			"offsets": [-20, 2],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHTmiss",
+			"loop": false,
+			"name": "Fever right miss"
+		},
+		{
+			"offsets": [-20, -11],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "Fever down0"
+		},
+		{
+			"offsets": [-6, 13],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "Fever up0"
+		},
+		{
+			"offsets": [2, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFTmiss",
+			"loop": false,
+			"name": "Fever left miss"
+		},
+		{
+			"offsets": [-12, -1],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "Fever idle"
+		},
+		{
+			"offsets": [-13, -3],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWNmiss",
+			"loop": false,
+			"name": "Fever down miss"
+		},
+		{
+			"offsets": [-22, 1],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "Fever right0"
+		},
+		{
+			"offsets": [-11, 9],
+			"indices": [],
+			"fps": 24,
+			"anim": "phone",
+			"loop": false,
+			"name": "Fever phone"
+		},
+		{
+			"offsets": [-7, 1],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "Fever left0"
+		},
+		{
+			"offsets": [-3, 10],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUPmiss",
+			"loop": false,
+			"name": "Fever up miss"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/fever/fever_rolldog",
+	"position": [0, 0],
+	"healthicon": "bf",
+	"flip_x": true,
+	"healthbar_colors": [195, 83, 227],
+	"camera_position": [0, 0],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": true
+}

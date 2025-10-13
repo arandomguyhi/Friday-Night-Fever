@@ -1,0 +1,63 @@
+{
+	"animations": [
+		{
+			"offsets": [0, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "robo idle"
+		},
+		{
+			"offsets": [82, -79],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "robo down"
+		},
+		{
+			"offsets": [14, -13],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "robo right"
+		},
+		{
+			"offsets": [31, 45],
+			"indices": [],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "robo up"
+		},
+		{
+			"offsets": [96, -1],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "robo left"
+		},
+		{
+			"offsets": [15, 2],
+			"indices": [],
+			"fps": 24,
+			"anim": "hey",
+			"loop": false,
+			"name": "robo hey"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/robo_fever_assets",
+	"position": [-365, 365.3],
+	"healthicon": "robo-cesar",
+	"flip_x": false,
+	"healthbar_colors": [146, 54, 180],
+	"camera_position": [0, 0],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": false
+}
