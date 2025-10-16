@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="scarlet.png">
+	<!-- Created with Adobe Animate version 20.5.0.29329 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="scarlet final" x="0" y="0" width="650" height="600"/>
+	<SubTexture name="scarlet happy" x="652" y="0" width="650" height="600"/>
+	<SubTexture name="scarlet neutral" x="1304" y="0" width="650" height="600"/>
+</TextureAtlas>

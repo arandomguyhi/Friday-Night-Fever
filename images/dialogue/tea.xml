@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:f914e11bc23938f78c8a965bf16d4cd8:6bd27c6d816ed24e27eaa432cdd87aad:efaa7d4e189f3f916d4e245af36429ae$ -->
+<TextureAtlas imagePath="tea.png" width="1950" height="1800">
+    <SubTexture name="tea angry" x="0" y="0" width="650" height="600"/>
+    <SubTexture name="tea flushed" x="650" y="0" width="650" height="600"/>
+    <SubTexture name="tea neutral" x="1300" y="0" width="650" height="600"/>
+    <SubTexture name="tea painting" x="0" y="600" width="650" height="600"/>
+    <SubTexture name="tea pointing-flushed" x="650" y="600" width="650" height="600"/>
+    <SubTexture name="tea pointing-wtf" x="1300" y="600" width="650" height="600"/>
+    <SubTexture name="tea pointing" x="0" y="1200" width="650" height="600"/>
+    <SubTexture name="tea thinking" x="650" y="1200" width="650" height="600"/>
+    <SubTexture name="tea worried" x="1300" y="1200" width="650" height="600"/>
+</TextureAtlas>

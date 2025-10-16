@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
+<!-- $TexturePacker:SmartUpdate:7dddc31ba33e12a16692bbc5c94890e8:98b08c60a5053df0ce8a2ca16e9a3b7d:764903a4088b5ad9515317f9c27e8717$ -->
+<TextureAtlas imagePath="fever.png" width="3900" height="1200">
+    <SubTexture name="fever chill" x="0" y="0" width="650" height="600"/>
+    <SubTexture name="fever cocky" x="650" y="0" width="650" height="600"/>
+    <SubTexture name="fever embarrassed" x="1300" y="0" width="650" height="600"/>
+    <SubTexture name="fever facepalm-blush" x="1950" y="0" width="650" height="600"/>
+    <SubTexture name="fever facepalm-stare" x="2600" y="0" width="650" height="600"/>
+    <SubTexture name="fever facepalm" x="3250" y="0" width="650" height="600"/>
+    <SubTexture name="fever hey" x="0" y="600" width="650" height="600"/>
+    <SubTexture name="fever neutral" x="650" y="600" width="650" height="600"/>
+    <SubTexture name="fever point-forward" x="1300" y="600" width="650" height="600"/>
+    <SubTexture name="fever point" x="1950" y="600" width="650" height="600"/>
+    <SubTexture name="fever shocked" x="2600" y="600" width="650" height="600"/>
+    <SubTexture name="fever ugh" x="3250" y="600" width="650" height="600"/>
+</TextureAtlas>
