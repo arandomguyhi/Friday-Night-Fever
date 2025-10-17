@@ -1,5 +1,5 @@
 <file>
-    <action portrait="fever-minus" side="l" emotion="shock"/>
+    <action portrait="fever-minus" side="r" emotion="shock"/>
     <action msg="THAT'S MY TICKET!" portraits="robo-fever-minus,fever-minus" effect="jump"/>
     <action msg="Buzz off, kid. I already told you, dis' tickets got MY NAME on it, so it belongs ta' me." portrait="robo-fever-minus"/>
     <action msg="With all due respect sir, I highly suggest you re-read the name on that ticket, for its rightful owner is without a doubt-" portrait="fever-minus" emotion="neutral" proceedImmediately="true"/>

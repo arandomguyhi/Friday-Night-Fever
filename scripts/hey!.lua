@@ -30,15 +30,15 @@ function onUpdate(elapsed)
     end
 
    -- HEY! thing
-    if keyboardJustPressed('SPACE') and getVar('canHey') then
+    if keyboardJustPressed('SPACE') and getVar('canHey') and not getProperty('inCutscene') then
 	if stringStartsWith(getProperty('boyfriend.animation.curAnim.name'), 'idle') then
-	    playAnim('boyfriend', 'hey') setProperty('boyfriend.specialAnim', true) end
+	    playAnim('boyfriend', 'hey', true) setProperty('boyfriend.specialAnim', true) end
 
 	if stringStartsWith(getProperty('gf.animation.curAnim.name'), 'dance') then
-	    playAnim('gf', 'cheer') setProperty('gf.specialAnim', true) end
+	    playAnim('gf', 'cheer', true) setProperty('gf.specialAnim', true) end
 
 	if callMethod('dad.animOffsets.exists', {'hey'}) then
-	    playAnim('dad', 'hey') setProperty('dad.specialAnim', true) end
+	    playAnim('dad', 'hey', true) setProperty('dad.specialAnim', true) end
     end
 end
 
