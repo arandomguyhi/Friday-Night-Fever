@@ -1,5 +1,5 @@
 function onCreate()
-    --[[makeLuaSprite('spookyBG', 'stages/week2/images/spooky', -200, -100)
+    makeLuaSprite('spookyBG', 'stages/week2/images/spooky', -200, -100)
     setProperty('spookyBG.antialiasing', true)
 
     makeLuaSprite('city', 'stages/week2/images/city', -290, -180)
@@ -7,7 +7,7 @@ function onCreate()
     setScrollFactor('city', 0.8, 0.8)
 
     addLuaSprite('city')
-    addLuaSprite('spookyBG')]]
+    addLuaSprite('spookyBG')
 end
 
 function onCreatePost()

@@ -51,9 +51,16 @@ end
 function onCreatePost()
     for _, i in pairs({'dad', 'boyfriend', 'gf'}) do
 	setScrollFactor(i, 0.9, 0.9) end
+
+    if dadName == 'bdbfever' then
+        setProperty('opponentCameraOffset[0]', -190)
+        setProperty('opponentCameraOffset[1]', -200)
+    end
 end
 
 function onBeatHit()
-    setProperty('bgGirls.animation.curAnim.curFrame', 0)
-    playAnim('bgGirls', 'idle'..(getScared and '-scared' or ''))
+    if luaSpriteExists('bgGirls') then
+        setProperty('bgGirls.animation.curAnim.curFrame', 0)
+        playAnim('bgGirls', 'idle'..(getScared and '-scared' or ''))
+    end
 end
