@@ -69,6 +69,7 @@ function onBeatHit()
 	    end
 	end
     elseif curBeat == 50 then
+        setVar('forceComboPos', {x = getProperty('strumLineNotes.members[4].x') - 200, y = getProperty('strumLineNotes.members[4].y')})
 	doTweenAlpha('t1', 't1', 1, 0.7)
     elseif curBeat == 59 then
 	doTweenAlpha('t1out', 't1', 0, 0.7)
@@ -89,6 +90,7 @@ function onBeatHit()
 	doTweenAlpha('prupr', 'purpleOverlay', 0.33, 0.7)
 	setProperty('isCameraOnForcedPos', false)
     elseif curBeat == 97 then
+        setVar('forceComboPos', nil)
 	local yAdd = downscroll and -200 or 200
 	startTween('diabeissodnv', 'scoreTxt', {y = getProperty('scoreTxt.y') - (downscroll and yAdd / 3.3 or 0), alpha = 1}, 0.4, {startDelay = 0.46, onComplete = 'completo'})
 	function completo()

@@ -20,9 +20,6 @@ local wifeConditions = {
 local wife = ''
 
 forcedCombo = false
-setVar('forceComboPos', {})
-
-luaDebugMode = true
 
 runHaxeCode([[
     import psychlua.FunkinLua;
@@ -201,30 +198,23 @@ function popUpScore()
 	    setProperty('numScore'..v..'.acceleration.y', getRandomInt(200, 300))
 	    setProperty('numScore'..v..'.velocity.y', -getRandomInt(140, 160))
 	    setProperty('numScore'..v..'.velocity.x', getRandomFloat(-5, 5))
-	    setProperty('numScore'..v..'.x', not forcedCombo and 0 or getProperty('comboRating'..cb..'.x') + (33 * index) - 8)
-	    setProperty('numScore'..v..'.y', not forcedCombo and 0 or getProperty('comboRating'..cb..'.y') + 100 + (pixel and 30 or 0))
+	    setProperty('numScore'..v..'.x', getProperty('comboRating'..cb..'.x') + (33 * index) - 8)
+	    setProperty('numScore'..v..'.y', getProperty('comboRating'..cb..'.y') + 100 + (pixel and 30 or 0))
 	    setObjectCamera('numScore'..v, 'hud')
 	    addLuaSprite('numScore'..v, true)
 
-	    setVar('maisquemerda', v) -- morre
 	    startTween('numTween'..v, 'numScore'..v, {alpha = 0}, 0.2, {startDelay = 0.3, onComplete = 'killnum'})
 	    function killnum()
-		for v = 1, getVar('maisquemerda') do
-		    callMethod('numScore'..v..'.kill', {''})
-		end
+		callMethod('numScore'.. v+1 ..'.kill', {''})
 	    end
 
 	    index = index + 1
 	end
     end
 
-    setVar('buceta', cb)
     startTween('ratinTween'..cb, 'comboRating'..cb, {alpha = 0}, 0.45, {startDelay = 0.27, onComplete = 'killrating'})
     function killrating()
-	for i = 1, getVar('buceta') do
-	    callMethod('comboRating'..cb..'.kill', {''})
-	    cb = cb - 1
-	end
+	callMethod('comboRating'..cb..'.kill', {''})
     end
 
     cb = cb + 1

@@ -1,3 +1,5 @@
+setProperty('dad.idleSuffix', '-mad')
+
 function onCreate()
     initLuaShader('ChromaticAberration')
     addCharacterToList('scarlet-final', 'dad')
@@ -24,7 +26,7 @@ function onBeatHit()
 	    setVar('chrabrr', chrabrr);
 	]])
 
-	playAnim('dad', 'transform', true)
+	playAnim('dad', 'transform', true) setProperty('dad.specialAnim', true)
 	setProperty('isCameraOnForcedPos', true)
 	setCameraTarget('dad')
 	startTween('zoomin', 'camGame', {zoom = 0.9}, (crochet / 1000) * 5, {})
@@ -50,10 +52,9 @@ function onBeatHit()
 	setCameraTarget('dad')
     end
 
-	--[[if (curBeat == 288)
-	{
-		game.useDirectionalCamera = true;
-	}]]
+    if curBeat == 288 then
+        setVar('useDirectionalCamera', true)
+    end
 end
 
 function onStepHit()
@@ -63,6 +64,8 @@ function onStepHit()
 end
 
 function onUpdate(elapsed)
-    local cB = (getSongPosition() / 1000) * (curBpm / 60)
-    --setProperty('scarlet.y', (getProperty('dad.y') + 475) + (11 + math.cos((cB / 5) * math.pi)))
+    if curBeat <= 207 then
+        local cB = (getSongPosition() / 1000) * (curBpm / 60)
+        setProperty('scarlet.y', (getProperty('dad.y') + 475) + (11 + math.cos((cB / 5) * math.pi)))
+    end
 end
