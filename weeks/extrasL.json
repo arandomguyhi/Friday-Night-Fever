@@ -1,7 +1,11 @@
 {
 	"songs": [
-		["Grando", "bf", [194, 160, 11]],
-		["Feel the Rage", "bf", [194, 160, 11]]
+		["Metamophorsis", "bf", [80, 165, 235]],
+		["Void", "bf", [194, 160, 11]],
+		["Down Bad", "bf", [194, 160, 11]],
+                ["Farmed", "bf", [80, 165, 235]],
+		["Space Demons", "bf", [194, 160, 11]],
+		["Old Hardships", "bf", [194, 160, 11]]
 	],
 
 	"weekCharacters": [

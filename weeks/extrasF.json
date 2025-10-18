@@ -1,7 +1,11 @@
 {
 	"songs": [
-		["Grando", "bf", [194, 160, 11]],
-		["Feel the Rage", "bf", [194, 160, 11]]
+		["Hardships", "bf", [80, 165, 235]],
+		["Erm", "bf", [194, 160, 11]],
+		["Mechanical", "bf", [194, 160, 11]],
+                ["Old Hallow", "bf", [194, 160, 11]],
+                ["Old Portrait", "bf", [194, 160, 11]],
+                ["Old Soul", "bf", [194, 160, 11]]
 	],
 
 	"weekCharacters": [

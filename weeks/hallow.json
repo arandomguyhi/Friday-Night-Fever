@@ -1,7 +1,9 @@
 {
 	"songs": [
-		["Grando", "bf", [194, 160, 11]],
-		["Feel the Rage", "bf", [194, 160, 11]]
+		["Hallow", "bf", [80, 165, 235]],
+		["Eclipse", "bf", [194, 160, 11]],
+		["SOUL", "bf", [194, 160, 11]],
+                ["Dead Mans Melody", "bf", [194, 160, 11]]
 	],
 
 	"weekCharacters": [

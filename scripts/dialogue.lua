@@ -1,5 +1,5 @@
 if not checkFileExists('data/'..songPath..'/dialogue.xml') then return end
-if seenCutscene then return end
+--if seenCutscene then return end
 
 -- tried to do something cool and useful lol, ig it didn't worked
 -- that's a recreation of DialogueBox.hx from Fever btw
@@ -35,7 +35,7 @@ function DialoguePortrait.new(char)
 
     runHaxeFunction('addAnims', {p, char})
 
-    setObjectCamera(p, 'hud')
+    setObjectCamera(p, 'other')
 
     if callMethod(p..'.animation.exists', {'neutral'}) then
         playAnim(p, 'neutral')
@@ -81,7 +81,7 @@ function onCreate()
     makeLuaSprite('bgDia') makeGraphic('bgDia', screenWidth, screenHeight, '000000')
     setProperty('bgDia.antialiasing', true)
     setProperty('bgDia.alpha', 0.7)
-    setObjectCamera('bgDia', 'hud')
+    setObjectCamera('bgDia', 'other')
     addLuaSprite('bgDia')
 
     runHaxeFunction('parseDialogue', {'data/'..songPath..'/dialogue.xml'})
@@ -89,7 +89,7 @@ function onCreate()
     makeLuaSprite('box', 'dialogue/box', 0, 460)
     screenCenter('box', 'X')
     setProperty('box.antialiasing', true)
-    setObjectCamera('box', 'hud')
+    setObjectCamera('box', 'other')
     addLuaSprite('box')
 
     createInstance('text', 'flixel.addons.text.FlxTypeText', {getProperty('box.x') + 25, getProperty('box.y') + 25, screenWidth * 0.85, '', 40})
@@ -97,14 +97,14 @@ function onCreate()
     setTextColor('text', 'ffffff') setProperty('text.borderSize', 1)
     setProperty('text.delay', 0.033)
     callMethod('text.setTypingVariation', {0.5, true})
-    setObjectCamera('text', 'hud')
+    setObjectCamera('text', 'other')
     addInstance('text')
 
     makeLuaText('skipDia', 'PRESS ESCAPE/BACKSPACE TO SKIP', screenWidth, 50, screenHeight - 40)
     setTextSize('skipDia', 32)
     setTextFont('skipDia', 'vcr.ttf')
     setTextAlignment('skipDia', 'LEFT')
-    setObjectCamera('skipDia', 'hud')
+    setObjectCamera('skipDia', 'other')
     addLuaText('skipDia')
     startTween('warn', 'skipDia', {alpha = 0}, 3, {startDelay = 3})
 
@@ -135,7 +135,7 @@ function onUpdate(elapsed)
 
     setProperty('text.delay', keyboardPressed('SHIFT') and 0.02 or 0.033)
 
-    if (keyboardJustPressed('SPACE') or keyboardJustPressed('ENTER')) or not getProperty('text._typing') and skip then
+    if (buildTarget == 'windows' and (keyboardJustPressed('SPACE') or keyboardJustPressed('ENTER')) or touchedScreen()) or not getProperty('text._typing') and skip then
         if not getProperty('text._typing') then
             startDialogue()
         else
@@ -169,9 +169,7 @@ function startDialogue()
     end
 
     if action.shake then
-        for _, camera in pairs(getPropertyFromClass('flixel.FlxG', 'cameras.list')) do
-            cameraShake(camera, 0.05, 0.5)
-        end
+        cameraShake('camOther', 0.05, 0.5)
     end
 
     if action.fadeOutMus ~= nil then
@@ -249,14 +247,14 @@ function startDialogue()
 end
 
 function fillBG(color)
-    if color == 'WHITE' then color = 'ffffff' end
     makeGraphic('bgDia', screenWidth, screenHeight, color)
     setProperty('bgDia.alpha', 1)
 end
 
 function setBG(bgStr)
     if #bgStr > 0 then
-        loadGraphic('bgDia', 'dialogue_backgrounds/'..bgStr)
+        local diaPath = 'dialogue_backgrounds/'..bgStr
+        loadGraphic('bgDia', checkFileExists('images/'..diaPath) and diaPath or bgStr)
         setProperty('bgDia.alpha', 1)
     else
         makeGraphic('bgDia', screenWidth, screenHeight, '000000')
@@ -487,6 +485,12 @@ function addPortrait(port)
         setProperty(_portrait.spr..'.visible', false)
         portraits[port] = _portrait
     end
+end
+
+function touchedScreen()
+    local mX, mY = getMouseX('camOther') + getProperty('camOther.scroll.x'), getMouseY('camOther') + getProperty('camOther.scroll.y')
+    local x, y = getProperty('camOther.x'), getProperty('camOther.y')
+    return mouseClicked() and (mX > x) and (mX < x + screenWidth) and (mY > y) and (mY < y + screenHeight)
 end
 
 function startsWith(str, start)
