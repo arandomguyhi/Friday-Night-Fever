@@ -7,94 +7,102 @@ function onCreate()
     setHudZoom(2)
 end
 
-function onUpdate(elapsed)
+function onUpdate(elapsed) songPos = getSongPosition()
     if curStep == 1 then
 	setCamZoom(1)
 	setHudZoom(1)
     end
 
     if curStep >= 129 and curStep < 255 then
-	local currentBeat = (songPos / 1000)*(bpm/60)
-	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 16 * math.sin((currentBeat + i*0.25) * math.pi), i)
-	    setActorY(_G['defaultStrum'..i..'Y'] + 16 * math.cos((currentBeat + i*0.25) * math.pi), i)
+	local currentBeat = (songPos / 1000)*(curBpm/60)
+        for i=0,7 do
+	    local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 16 * math.sin((currentBeat + i*0.25) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', _G[member..'Y'..(i%4)] + 16 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
     if curStep >= 384 and curStep < 512 then
-	local currentBeat = (songPos / 1000)*(bpm/60)
+	local currentBeat = (songPos / 1000)*(curBpm/60)
         for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 16 * math.sin((currentBeat + i*0.25) * math.pi), i)
-	    setActorY(_G['defaultStrum'..i..'Y'] + 16 * math.cos((currentBeat + i*0.25) * math.pi), i)
+	    local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 16 * math.sin((currentBeat + i*0.25) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', _G[member..'Y'..(i%4)] + 16 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 	
     if curStep >= 642 and curStep < 768 then
-	local currentBeat = (songPos / 1000)*(bpm/60)
+	local currentBeat = (songPos / 1000)*(curBpm/60)
         for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 16 * math.sin((currentBeat + i*0.25) * math.pi), i)
-	    setActorY(_G['defaultStrum'..i..'Y'] + 16 * math.cos((currentBeat + i*0.25) * math.pi), i)
+	    local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 16 * math.sin((currentBeat + i*0.25) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', _G[member..'Y'..(i%4)] + 16 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
     if curStep >= 768 and curStep < 894 then
-	local currentBeat = (songPos / 1000)*(bpm/60)
+	local currentBeat = (songPos / 1000)*(curBpm/60)
         for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*0.25) * math.pi), i)
-	    setActorY(_G['defaultStrum'..i..'Y'] + 32 * math.cos((currentBeat + i*0.25) * math.pi), i)
+	    local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*0.25) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', _G[member..'Y'..(i%4)] + 32 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
     if curStep >= 0 and curStep < 129 then
-	local currentBeat = (songPos / 1000)*(bpm/120)
-	for i=0,7 do
-	    setActorY(defaultStrum0Y + 10 * math.cos((currentBeat + i*0.25) * math.pi), i)
-	end
+	local currentBeat = (songPos / 1000)*(curBpm/120)
+        for i = 0, 7 do
+           setProperty('strumLineNotes.members['..i..'].y', defaultOpponentStrumY0 + 10 * math.cos((currentBeat + i*0.25) * math.pi))
+        end
     end
 
     if curStep >= 255 and curStep < 384 then
-	local currentBeat = (songPos / 1000)*(bpm/120)
+	local currentBeat = (songPos / 1000)*(curBpm/120)
 	for i=0,7 do
-	    setActorY(defaultStrum0Y + 10 * math.cos((currentBeat + i*0.25) * math.pi), i)
+	    setProperty('strumLineNotes.members['..i..'].y', defaultOpponentStrumY0 + 10 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
     if curStep >= 520 and curStep < 544 then
-	local currentBeat = (songPos / 1000)*(bpm/120)
+	local currentBeat = (songPos / 1000)*(curBpm/120)
 	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*0.25) * math.pi), i)
-	    setActorY(defaultStrum0Y + 10 * math.cos((currentBeat + i*0.25) * math.pi), i)
+            local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*0.25) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', defaultOpponentStrumY0 + 10 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
     if curStep >= 552 and curStep < 578 then
-	local currentBeat = (songPos / 1000)*(bpm/120)
+	local currentBeat = (songPos / 1000)*(curBpm/120)
 	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*0.25) * math.pi), i)
-	    setActorY(defaultStrum0Y + 10 * math.cos((currentBeat + i*0.25) * math.pi), i)
+            local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*0.25) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', defaultOpponentStrumY0 + 10 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
     if curStep >= 584 and curStep < 608 then
-	local currentBeat = (songPos / 1000)*(bpm/120)
+	local currentBeat = (songPos / 1000)*(curBpm/120)
 	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*0.25) * math.pi), i)
-	    setActorY(defaultStrum0Y + 10 * math.cos((currentBeat + i*0.25) * math.pi), i)
+            local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*0.25) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', defaultOpponentStrumY0 + 10 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
     if curStep >= 616 and curStep < 642 then
-	local currentBeat = (songPos / 1000)*(bpm/120)
+	local currentBeat = (songPos / 1000)*(curBpm/120)
 	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*0.25) * math.pi), i)
-	    setActorY(defaultStrum0Y + 10 * math.cos((currentBeat + i*0.25) * math.pi), i)
+            local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*0.25) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', defaultOpponentStrumY0 + 10 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
     if curStep >= 898 and curStep < 1024 then
-	local currentBeat = (songPos / 1000)*(bpm/120)
-	for i=0,7 do
-	    setActorY(defaultStrum0Y + 10 * math.cos((currentBeat + i*0.25) * math.pi), i)
+	local currentBeat = (songPos / 1000)*(curBpm/120)
+        for i=0,7 do
+	    setProperty('strumLineNotes.members['..i..'].y', defaultOpponentStrumY0 + 10 * math.cos((currentBeat + i*0.25) * math.pi))
 	end
     end
 
@@ -116,34 +124,38 @@ function onUpdate(elapsed)
     end
 
     if curStep >= 512 and curStep < 520 then
-	local currentBeat = (songPos / 1000)*(bpm/30)
+	local currentBeat = (songPos / 1000)*(curBpm/30)
 	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*1.5) * math.pi), i)
-	    setActorY(_G['defaultStrum'..i..'Y'] + 32 * math.cos((currentBeat + i*1.5) * math.pi), i)
+	    local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*1.5) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', _G[member..'Y'..(i%4)] + 32 * math.cos((currentBeat + i*1.5) * math.pi))
 	end
     end
 
     if curStep >= 544 and curStep < 552 then
-	local currentBeat = (songPos / 1000)*(bpm/30)
+	local currentBeat = (songPos / 1000)*(curBpm/30)
 	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*1.5) * math.pi), i)
-	    setActorY(_G['defaultStrum'..i..'Y'] + 32 * math.cos((currentBeat + i*1.5) * math.pi), i)
+	    local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*1.5) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', _G[member..'Y'..(i%4)] + 32 * math.cos((currentBeat + i*1.5) * math.pi))
 	end
     end
 
     if curStep >= 578 and curStep < 584 then
-	local currentBeat = (songPos / 1000)*(bpm/30)
+	local currentBeat = (songPos / 1000)*(curBpm/30)
 	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*1.5) * math.pi), i)
-	    setActorY(_G['defaultStrum'..i..'Y'] + 32 * math.cos((currentBeat + i*1.5) * math.pi), i)
+	    local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*1.5) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', _G[member..'Y'..(i%4)] + 32 * math.cos((currentBeat + i*1.5) * math.pi))
 	end
     end
 
     if curStep >= 608 and curStep < 616 then
-	local currentBeat = (songPos / 1000)*(bpm/30)
+	local currentBeat = (songPos / 1000)*(curBpm/30)
 	for i=0,7 do
-	    setActorX(_G['defaultStrum'..i..'X'] + 32 * math.sin((currentBeat + i*1.5) * math.pi), i)
-	    setActorY(_G['defaultStrum'..i..'Y'] + 32 * math.cos((currentBeat + i*1.5) * math.pi), i)
+	    local member = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum'
+	    setProperty('strumLineNotes.members['..i..'].x', _G[member..'X'..(i%4)] + 32 * math.sin((currentBeat + i*1.5) * math.pi))
+	    setProperty('strumLineNotes.members['..i..'].y', _G[member..'Y'..(i%4)] + 32 * math.cos((currentBeat + i*1.5) * math.pi))
 	end
     end
 
@@ -185,9 +197,10 @@ end
 
 function onStepHit()
     if curStep == 512 or curStep == 544 then
-        for i = 0, 7 do
-            tweenPosXAngle(i, _G['defaultStrum'..i..'X'],getActorAngle(i) + 360, 0.6, 'setDefault')
-        end
+        for i=0, 7 do
+	    local note,bzl = i > 3 and 'defaultPlayerStrum' or 'defaultOpponentStrum', (i > 3 and 'playerStrums' or 'opponentStrums')..'.members['..(i%4)..']'
+	    startTween('culol'..i, bzl, {x = _G[note..'X'..(i%4)], angle = getProperty(bzl..'.angle')+360}, 0.6, {})
+	end
     end
 end
 

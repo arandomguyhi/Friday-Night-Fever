@@ -5,6 +5,8 @@ luaDebugMode = true
 function onCreate()
     setProperty('camZoomingMult', 0)
 
+    setVar('forceComboPos', {x = 80, y = 500})
+
     makeLuaSprite('purpleOverlay')
     makeGraphic('purpleOverlay', screenWidth, screenHeight, '800080')
     setProperty('purpleOverlay.alpha', 0)
