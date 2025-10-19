@@ -7,7 +7,7 @@ function onSpawnNote()
     for i = 0, getProperty('notes.length')-1 do
 	if getPropertyFromGroup('notes', i, 'noteType') == 'Hallow' then
 	    setPropertyFromGroup('notes', i, 'texture', 'noteSkins/hallowNotes')
-	    setPropertyFromGroup('notes', i, 'noAnimation', true)
+	    setPropertyFromGroup('notes', i, 'noAnimation', getProperty('notes.members['..i..'].mustPress'))
 	end
     end
 end

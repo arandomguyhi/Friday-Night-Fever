@@ -35,8 +35,9 @@ function onUpdate(elapsed)
     for i = 0, getProperty('notes.length')-1 do
 	local noteStrumTime = getPropertyFromGroup('notes', i, 'strumTime') - getSongPosition()
 	local noteToHit = getPropertyFromGroup('notes', i, 'noteType')
+        local press = getProperty('notes.members['..i..'].mustPress')
 
-	if noteToHit == 'Hallow' then
+	if noteToHit == 'Hallow' and press then
 	    if noteStrumTime <= 750 * playbackRate and noteStrumTime >= 718 then -- this is maybe dumb
 		summonPainting()
 	    end

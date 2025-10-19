@@ -4,7 +4,7 @@ local defaultStrumPos = {}
 
 setProperty('camZoomingMult', 0)
 
-function onCreatePost()
+function onCountdownStarted()
     for i = 0, 7 do
         table.insert(defaultStrumPos, {
             x = getPropertyFromGroup('strumLineNotes', i, 'x'),
