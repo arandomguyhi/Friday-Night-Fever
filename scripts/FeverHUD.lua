@@ -27,15 +27,7 @@ runHaxeCode([[
     FunkinLua.customFunctions.set('getCamPos', function(char:String) {
         parentLua.call('getCamPos', [char]);
     });
-    FunkinLua.customFunctions.set('snapCamera', function(xpos, ypos) {
-        parentLua.call('snap', [xpos,ypos]);
-    });
 ]])
-
-function snap(x,y)
-    callMethod('camFollow.setPosition', {x,y})
-    callMethod('camGame.snapToTarget', {''})
-end
 
 function getCamPos(char)
     local _char = char
@@ -55,12 +47,10 @@ function onCreate()
     precacheImage('combo/ratings')
     precacheImage('noteSplashes/noteSplashes')
 
-    --setPropertyFromClass('states.PlayState', 'SONG.splashSkin', 'noteSplashes/noteSplashes')
-
     setProperty('healthGain', 0)
 end
 
-function onCreatePost()
+function onCountdownStarted()
     setProperty('comboGroup.visible', false)
 
     setProperty('timeBar.visible', false)
@@ -68,12 +58,10 @@ function onCreatePost()
     setTextFont('scoreTxt', 'vcr.ttf')
 
     for i = 0, getProperty('strumLineNotes.length')-1 do
-	setPropertyFromGroup('strumLineNotes', i, 'rgbShader.enabled', false)
+	setPropertyFromGroup('strumLineNotes', i, 'useRGBShader', false)
     end
 
     loadIcons()
-    --setProperty('iconP1.iconOffsets[0]', getProperty('iconP1.iconOffsets[0]') - 45)
-    --setProperty('iconP2.iconOffsets[0]', getProperty('iconP2.iconOffsets[0]') - 45)
 end
 
 function onUpdatePost()
