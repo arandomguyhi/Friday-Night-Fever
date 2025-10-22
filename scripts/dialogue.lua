@@ -488,8 +488,8 @@ function addPortrait(port)
 end
 
 function touchedScreen()
-    local mX, mY = getMouseX('camOther') + getProperty('camOther.scroll.x'), getMouseY('camOther') + getProperty('camOther.scroll.y')
-    local x, y = getProperty('camOther.x'), getProperty('camOther.y')
+    local mX, mY = getMouseX('camother') + getProperty('camother.scroll.x'), getMouseY('camother') + getProperty('camother.scroll.y')
+    local x, y = getProperty('camother.x'), getProperty('camother.y')
     return mouseClicked() and (mX > x) and (mX < x + screenWidth) and (mY > y) and (mY < y + screenHeight)
 end
 
