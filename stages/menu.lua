@@ -10,21 +10,21 @@ local skippedIntro = false
 local hue = 0
 local saturation = 0
 
-setProperty('skipCountdown', true)
+setProperty('skipCountdown', true) setProperty('camZooming', true)
 
 function onCreatePost()
     setProperty('camGame.visible', false)
-    setProperty('camHUD.visible', false)
+    --setProperty('camHUD.visible', false)
+    setProperty('uiGroup.visible', false)
 
     if shadersEnabled then
-        initLuaShader('ColorShader')
+        initLuaShader('ColorShader') end
         makeLuaSprite('logoBl', 'title/logo', 55, 40)
         setProperty('logoBl.antialiasing', true)
-        setObjectCamera('logoBl', 'other')
+        setObjectCamera('logoBl', 'hud')
         if shadersEnabled then
             setSpriteShader('logoBl', 'ColorShader')
         end
-    end
 end
 
 function onSongStart()
@@ -37,7 +37,7 @@ function onCustomSubstateCreate(name)
 
         makeLuaSprite('bg', 'title/bg', -20, -1)
         setProperty('bg.antialiasing', true)
-        setObjectCamera('bg', 'other')
+        setObjectCamera('bg', 'hud')
         addLuaSprite('bg')
 
         addLuaSprite('logoBl')
@@ -49,7 +49,7 @@ function onCustomSubstateCreate(name)
         setProperty('tea.origin.x', 0) setProperty('tea.origin.y', 0)
         scaleObject('tea', 0.66, 0.66, false)
         setProperty('tea.antialiasing', true)
-        setObjectCamera('tea', 'other')
+        setObjectCamera('tea', 'hud')
         addLuaSprite('tea')
 
         makeAnimatedLuaSprite('feva', 'title/fever', cool and 945 or 755, cool and 247 or 282)
@@ -58,12 +58,12 @@ function onCustomSubstateCreate(name)
         setProperty('feva.origin.x', 0) setProperty('feva.origin.y', 0)
         scaleObject('feva', 0.66, 0.66, false)
         setProperty('feva.antialiasing', true)
-        setObjectCamera('feva', 'other')
+        setObjectCamera('feva', 'hud')
         addLuaSprite('feva')
 
         makeLuaSprite('front', 'title/front', 544, 616)
         setProperty('front.antialiasing', true)
-        setObjectCamera('front', 'other')
+        setObjectCamera('front', 'hud')
         addLuaSprite('front')
 
         runTimer('start', 0.1)
@@ -82,11 +82,11 @@ function startIntro()
     ]])
 
     makeLuaSprite('blackScreen') makeGraphic('blackScreen', screenWidth, screenHeight, '000000')
-    setObjectCamera('blackScreen', 'other')
+    setObjectCamera('blackScreen', 'hud')
     addToGrp('credGroup', 'blackScreen')
 
     makeLuaSprite('ngSpr', 'teamfever', 0, screenHeight * 0.52)
-    setObjectCamera('ngSpr', 'other')
+    setObjectCamera('ngSpr', 'hud')
     addLuaSprite('ngSpr', true)
     setProperty('ngSpr.visible', false)
     scaleObject('ngSpr', 0.9, 0.9)
@@ -116,7 +116,7 @@ local transitioning = false
 function onCustomSubstateUpdate(name, elapsed)
     if name == 'Title State' then
         if not transitioning then
-            setProperty('camOther.zoom', callMethodFromClass('flixel.math.FlxMath', 'lerp', {1, getProperty('camOther.zoom'), 0.95}))
+            setProperty('camhud.zoom', callMethodFromClass('flixel.math.FlxMath', 'lerp', {1, getProperty('camhud.zoom'), 0.95}))
         end
 
         if not transitioning and skippedIntro then
@@ -132,13 +132,13 @@ function onCustomSubstateUpdate(name, elapsed)
                 initialized = true
                 transitioning = true
 
-                cameraFlash('camOther', 'ffffff', 1)
+                cameraFlash('camhud', 'ffffff', 1)
                 playSound('select', 0.7)
 
                 runTimer('trans', 0.4)
                 onTimerCompleted = function(tag)
                     if tag == 'trans' then
-                        callMethodFromClass('flixel.addons.transition.FlxTransitionableState', 'transitionIn', {''})
+                        cameraFade('camHUD', '000000', 1)
                     end
                 end
             elseif not skippedIntro then
@@ -153,7 +153,7 @@ function createCoolText(textArray)
         createInstance('money'..i, 'objects.Alphabet', {0, 0, textArray[i], true})
         screenCenter('money'..i, 'X')
         setProperty('money'..i..'.y', getProperty('money'..i..'.y') + (i*60)+200)
-        setObjectCamera('money'..i, 'other')
+        setObjectCamera('money'..i, 'hud')
         addToGrp('credGroup', 'money'..i, true) addToGrp('textGroup', 'money'..i, true)
     end
     txtArray = #textArray
@@ -164,7 +164,7 @@ function addMoreText(text)
     createInstance('coolText'..coolLen, 'objects.Alphabet', {0, 0, text, true})
     screenCenter('coolText'..coolLen, 'X')
     setProperty('coolText'..coolLen..'.y', getProperty('coolText'..coolLen..'.y') + ((getProperty('textGroup.length')+1) * 60) + 200)
-    setObjectCamera('coolText'..coolLen, 'other')
+    setObjectCamera('coolText'..coolLen, 'hud')
     addToGrp('credGroup', 'coolText'..coolLen, true) addToGrp('textGroup', 'coolText'..coolLen, true)
     coolLen = coolLen + 1
 end
@@ -188,7 +188,7 @@ function onBeatHit()
     startTween('logoBump', 'logoBl.scale', {x = 1, y = 1}, (crochet/1000) / 1.5, {})
 
     if not initialized and not skippedIntro then
-        setProperty('camOther.zoom', getProperty('camOther.zoom') + 0.015)
+        setProperty('camHUD.zoom', getProperty('camHUD.zoom') + 0.015)
         if curBeat == 1 then
             createCoolText({'Friday Night', 'Fever Dev Team'})
         elseif curBeat == 3 then
@@ -228,7 +228,7 @@ function skipIntro()
     if not skippedIntro then
         removeLuaSprite('ngSpr', true)
         if not initialized then
-            cameraFlash('camOther', 'ffffff', 4)
+            cameraFlash('camhud', 'ffffff', 4)
         end
 
         callMethod('remove', {instanceArg('credGroup')})
